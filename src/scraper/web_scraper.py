@@ -95,58 +95,64 @@ class WebScraper:
         self.driver.implicitly_wait(self.wait_time)
         logger.info(f"WebDriver setup completed: {self.browser_type}")
     
-    async def scrape_website(self, url: str) -> ScrapedData:
-        """Scrape website and extract all relevant data"""
-        if not self.driver:
-            self._setup_driver()
-            
+    def scrape_website(self, url: str) -> ScrapedData:
+        """Scrape complete website data"""
+        logger.info(f"Starting to scrape: {url}")
+        
         start_time = time.time()
         
         try:
-            logger.info(f"Starting to scrape: {url}")
+            # Setup driver if not already initialized
+            if self.driver is None:
+                self._setup_driver()
             
-            # Navigate to the website
+            # Navigate to URL
             self.driver.get(url)
             
-            # Wait for page to load
-            WebDriverWait(self.driver, self.timeout).until(
+            # Wait for page load
+            WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.TAG_NAME, "body"))
             )
             
-            # Additional wait for dynamic content
-            time.sleep(self.wait_time)
+            # Get page metadata
+            title = self.driver.title
+            current_url = self.driver.current_url
             
             # Get page source
             html_content = self.driver.page_source
-            soup = BeautifulSoup(html_content, 'html.parser')
             
-            # Extract page data
+            # Extract all elements
+            forms = self._extract_forms()
+            buttons = self._extract_buttons()
+            links = self._extract_links()
+            inputs = self._extract_inputs()
+            images = self._extract_images()
+            meta_tags = self._extract_meta_tags()
+            page_structure = self._analyze_page_structure()
+            
+            end_time = time.time()
+            load_time = end_time - start_time
+            
             scraped_data = ScrapedData(
-                url=url,
-                title=self._extract_title(soup),
+                url=current_url,
+                title=title,
                 html_content=html_content,
-                forms=self._extract_forms(soup),
-                links=self._extract_links(soup, url),
-                buttons=self._extract_buttons(soup),
-                inputs=self._extract_inputs(soup),
-                images=self._extract_images(soup, url),
-                meta_tags=self._extract_meta_tags(soup),
-                page_structure=self._analyze_page_structure(soup),
-                load_time=time.time() - start_time,
-                status_code=200  # Assuming success if no exception
+                forms=forms,
+                links=links,
+                buttons=buttons,
+                inputs=inputs,
+                images=images,
+                meta_tags=meta_tags,
+                page_structure=page_structure,
+                load_time=load_time,
+                status_code=200  # Assuming success if we got here
             )
             
-            logger.info(f"Successfully scraped {url} in {scraped_data.load_time:.2f}s")
+            logger.info(f"Successfully scraped {url} in {load_time:.2f}s")
             return scraped_data
             
-        except TimeoutException:
-            logger.error(f"Timeout while loading {url}")
-            raise
-        except WebDriverException as e:
-            logger.error(f"WebDriver error for {url}: {e}")
-            raise
         except Exception as e:
-            logger.error(f"Unexpected error while scraping {url}: {e}")
+            logger.error(f"Error scraping website {url}: {e}")
             raise
     
     def _extract_title(self, soup: BeautifulSoup) -> str:
@@ -154,196 +160,172 @@ class WebScraper:
         title_tag = soup.find('title')
         return title_tag.text.strip() if title_tag else ""
     
-    def _extract_forms(self, soup: BeautifulSoup) -> List[Dict]:
+    def _extract_forms(self) -> List[Dict]:
         """Extract all forms from the page"""
         forms = []
-        
-        for form in soup.find_all('form'):
-            form_data = {
-                'id': form.get('id', ''),
-                'name': form.get('name', ''),
-                'action': form.get('action', ''),
-                'method': form.get('method', 'GET').upper(),
-                'enctype': form.get('enctype', ''),
-                'fields': []
-            }
+        try:
+            form_elements = self.driver.find_elements(By.TAG_NAME, "form")
             
-            # Extract form fields
-            for field in form.find_all(['input', 'textarea', 'select']):
-                field_data = {
-                    'tag': field.name,
-                    'type': field.get('type', 'text'),
-                    'name': field.get('name', ''),
-                    'id': field.get('id', ''),
-                    'placeholder': field.get('placeholder', ''),
-                    'required': field.has_attr('required'),
-                    'value': field.get('value', ''),
-                    'class': field.get('class', [])
+            for form in form_elements:
+                form_data = {
+                    'id': form.get_attribute('id') or '',
+                    'name': form.get_attribute('name') or '',
+                    'action': form.get_attribute('action') or '',
+                    'method': form.get_attribute('method') or 'get',
+                    'fields': []
                 }
                 
-                if field.name == 'select':
-                    field_data['options'] = [
-                        {'value': opt.get('value', ''), 'text': opt.text.strip()}
-                        for opt in field.find_all('option')
-                    ]
+                # Find input fields within form
+                inputs = form.find_elements(By.TAG_NAME, "input")
+                for inp in inputs:
+                    field = {
+                        'name': inp.get_attribute('name') or '',
+                        'type': inp.get_attribute('type') or 'text',
+                        'id': inp.get_attribute('id') or '',
+                        'placeholder': inp.get_attribute('placeholder') or '',
+                        'required': inp.get_attribute('required') == 'true'
+                    }
+                    form_data['fields'].append(field)
                 
-                form_data['fields'].append(field_data)
+                forms.append(form_data)
+                
+        except Exception as e:
+            logger.warning(f"Error extracting forms: {e}")
             
-            forms.append(form_data)
-        
         return forms
     
-    def _extract_links(self, soup: BeautifulSoup, base_url: str) -> List[Dict]:
+    def _extract_links(self) -> List[Dict]:
         """Extract all links from the page"""
         links = []
-        
-        for link in soup.find_all('a', href=True):
-            href = link.get('href')
-            absolute_url = urljoin(base_url, href)
+        try:
+            link_elements = self.driver.find_elements(By.TAG_NAME, "a")
             
-            link_data = {
-                'text': link.text.strip(),
-                'href': href,
-                'absolute_url': absolute_url,
-                'title': link.get('title', ''),
-                'class': link.get('class', []),
-                'id': link.get('id', ''),
-                'target': link.get('target', ''),
-                'is_external': urlparse(absolute_url).netloc != urlparse(base_url).netloc
-            }
+            for link in link_elements:
+                href = link.get_attribute('href')
+                if href:  # Only include links with href
+                    link_data = {
+                        'text': link.text.strip() or '',
+                        'href': href,
+                        'title': link.get_attribute('title') or '',
+                        'target': link.get_attribute('target') or '',
+                        'class': link.get_attribute('class') or ''
+                    }
+                    links.append(link_data)
+                    
+        except Exception as e:
+            logger.warning(f"Error extracting links: {e}")
             
-            links.append(link_data)
-        
         return links
     
-    def _extract_buttons(self, soup: BeautifulSoup) -> List[Dict]:
+    def _extract_buttons(self) -> List[Dict]:
         """Extract all buttons from the page"""
         buttons = []
-        
-        # Find button tags
-        for button in soup.find_all('button'):
-            button_data = {
-                'tag': 'button',
-                'type': button.get('type', 'button'),
-                'text': button.text.strip(),
-                'id': button.get('id', ''),
-                'name': button.get('name', ''),
-                'class': button.get('class', []),
-                'onclick': button.get('onclick', ''),
-                'disabled': button.has_attr('disabled')
-            }
-            buttons.append(button_data)
-        
-        # Find input buttons
-        for input_btn in soup.find_all('input', type=['button', 'submit', 'reset']):
-            button_data = {
-                'tag': 'input',
-                'type': input_btn.get('type'),
-                'text': input_btn.get('value', ''),
-                'id': input_btn.get('id', ''),
-                'name': input_btn.get('name', ''),
-                'class': input_btn.get('class', []),
-                'onclick': input_btn.get('onclick', ''),
-                'disabled': input_btn.has_attr('disabled')
-            }
-            buttons.append(button_data)
-        
+        try:
+            # Find button elements
+            button_elements = self.driver.find_elements(By.TAG_NAME, "button")
+            input_buttons = self.driver.find_elements(By.XPATH, "//input[@type='button' or @type='submit']")
+            
+            all_buttons = button_elements + input_buttons
+            
+            for button in all_buttons:
+                button_data = {
+                    'text': button.text or button.get_attribute('value') or '',
+                    'id': button.get_attribute('id') or '',
+                    'name': button.get_attribute('name') or '',
+                    'type': button.get_attribute('type') or 'button',
+                    'class': button.get_attribute('class') or '',
+                    'onclick': button.get_attribute('onclick') or ''
+                }
+                buttons.append(button_data)
+                
+        except Exception as e:
+            logger.warning(f"Error extracting buttons: {e}")
+            
         return buttons
     
-    def _extract_inputs(self, soup: BeautifulSoup) -> List[Dict]:
-        """Extract all input fields from the page"""
+    def _extract_inputs(self) -> List[Dict]:
+        """Extract all input elements from the page"""
         inputs = []
-        
-        for input_field in soup.find_all('input'):
-            input_data = {
-                'type': input_field.get('type', 'text'),
-                'name': input_field.get('name', ''),
-                'id': input_field.get('id', ''),
-                'placeholder': input_field.get('placeholder', ''),
-                'value': input_field.get('value', ''),
-                'class': input_field.get('class', []),
-                'required': input_field.has_attr('required'),
-                'readonly': input_field.has_attr('readonly'),
-                'disabled': input_field.has_attr('disabled'),
-                'maxlength': input_field.get('maxlength', ''),
-                'minlength': input_field.get('minlength', ''),
-                'pattern': input_field.get('pattern', '')
-            }
-            inputs.append(input_data)
-        
+        try:
+            input_elements = self.driver.find_elements(By.TAG_NAME, "input")
+            
+            for inp in input_elements:
+                input_data = {
+                    'name': inp.get_attribute('name') or '',
+                    'type': inp.get_attribute('type') or 'text',
+                    'id': inp.get_attribute('id') or '',
+                    'placeholder': inp.get_attribute('placeholder') or '',
+                    'value': inp.get_attribute('value') or '',
+                    'required': inp.get_attribute('required') == 'true',
+                    'class': inp.get_attribute('class') or ''
+                }
+                inputs.append(input_data)
+                
+        except Exception as e:
+            logger.warning(f"Error extracting inputs: {e}")
+            
         return inputs
     
-    def _extract_images(self, soup: BeautifulSoup, base_url: str) -> List[Dict]:
+    def _extract_images(self) -> List[Dict]:
         """Extract all images from the page"""
         images = []
-        
-        for img in soup.find_all('img'):
-            src = img.get('src', '')
-            absolute_url = urljoin(base_url, src) if src else ''
+        try:
+            img_elements = self.driver.find_elements(By.TAG_NAME, "img")
             
-            image_data = {
-                'src': src,
-                'absolute_url': absolute_url,
-                'alt': img.get('alt', ''),
-                'title': img.get('title', ''),
-                'class': img.get('class', []),
-                'id': img.get('id', ''),
-                'width': img.get('width', ''),
-                'height': img.get('height', '')
-            }
-            images.append(image_data)
-        
+            for img in img_elements:
+                src = img.get_attribute('src')
+                if src:  # Only include images with src
+                    image_data = {
+                        'src': src,
+                        'alt': img.get_attribute('alt') or '',
+                        'title': img.get_attribute('title') or '',
+                        'class': img.get_attribute('class') or '',
+                        'width': img.get_attribute('width') or '',
+                        'height': img.get_attribute('height') or ''
+                    }
+                    images.append(image_data)
+                    
+        except Exception as e:
+            logger.warning(f"Error extracting images: {e}")
+            
         return images
     
-    def _extract_meta_tags(self, soup: BeautifulSoup) -> List[Dict]:
+    def _extract_meta_tags(self) -> List[Dict]:
         """Extract meta tags from the page"""
         meta_tags = []
-        
-        for meta in soup.find_all('meta'):
-            meta_data = {
-                'name': meta.get('name', ''),
-                'content': meta.get('content', ''),
-                'property': meta.get('property', ''),
-                'charset': meta.get('charset', ''),
-                'http_equiv': meta.get('http-equiv', '')
-            }
-            meta_tags.append(meta_data)
-        
+        try:
+            meta_elements = self.driver.find_elements(By.TAG_NAME, "meta")
+            
+            for meta in meta_elements:
+                meta_data = {
+                    'name': meta.get_attribute('name') or '',
+                    'property': meta.get_attribute('property') or '',
+                    'content': meta.get_attribute('content') or '',
+                    'charset': meta.get_attribute('charset') or ''
+                }
+                meta_tags.append(meta_data)
+                
+        except Exception as e:
+            logger.warning(f"Error extracting meta tags: {e}")
+            
         return meta_tags
     
-    def _analyze_page_structure(self, soup: BeautifulSoup) -> Dict:
-        """Analyze page structure and hierarchy"""
-        structure = {
-            'headings': {},
-            'sections': [],
-            'navigation': [],
-            'footer': [],
-            'sidebar': []
-        }
-        
-        # Extract headings
-        for i in range(1, 7):
-            headings = soup.find_all(f'h{i}')
-            if headings:
-                structure['headings'][f'h{i}'] = [h.text.strip() for h in headings]
-        
-        # Extract sections
-        for section in soup.find_all(['section', 'article', 'div'], class_=True):
-            class_names = section.get('class', [])
-            structure['sections'].append({
-                'tag': section.name,
-                'class': class_names,
-                'id': section.get('id', '')
-            })
-        
-        # Extract navigation
-        for nav in soup.find_all(['nav', 'div'], class_=lambda x: x and any('nav' in str(c).lower() for c in x)):
-            nav_links = nav.find_all('a')
-            structure['navigation'].append({
-                'class': nav.get('class', []),
-                'links': [{'text': link.text.strip(), 'href': link.get('href', '')} for link in nav_links]
-            })
-        
+    def _analyze_page_structure(self) -> Dict:
+        """Analyze page structure"""
+        structure = {}
+        try:
+            # Count main elements
+            structure['total_elements'] = len(self.driver.find_elements(By.XPATH, "//*"))
+            structure['divs'] = len(self.driver.find_elements(By.TAG_NAME, "div"))
+            structure['spans'] = len(self.driver.find_elements(By.TAG_NAME, "span"))
+            structure['paragraphs'] = len(self.driver.find_elements(By.TAG_NAME, "p"))
+            structure['headings'] = len(self.driver.find_elements(By.XPATH, "//h1 | //h2 | //h3 | //h4 | //h5 | //h6"))
+            structure['tables'] = len(self.driver.find_elements(By.TAG_NAME, "table"))
+            structure['lists'] = len(self.driver.find_elements(By.XPATH, "//ul | //ol"))
+            
+        except Exception as e:
+            logger.warning(f"Error analyzing page structure: {e}")
+            
         return structure
     
     def take_screenshot(self, filename: str = None) -> str:

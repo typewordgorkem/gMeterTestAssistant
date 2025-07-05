@@ -5,7 +5,7 @@ Supports Ollama, LocalAI, and custom models
 
 import json
 import httpx
-import asyncio
+import time
 from typing import Dict, List, Optional, Any
 from loguru import logger
 import yaml
@@ -43,46 +43,62 @@ class AIClient:
             logger.error(f"Error parsing config file: {e}")
             raise
     
-    async def analyze_html(self, html_content: str, url: str) -> AIResponse:
-        """Analyze HTML content and extract testable elements"""
-        prompt = f"""
-        Bu web sitesini analiz et:
-        URL: {url}
-        
-        Site başlığı ve ana elementleri belirle:
-        1. Sayfa başlığı
-        2. Ana butonlar
-        3. Linkler
-        4. Formlar
-        
-        Kısaca yanıtla.
-        """
-        
-        return await self._make_request(prompt)
+    def analyze_html(self, html_content: str, url: str) -> AIResponse:
+        """Analyze HTML content with AI"""
+        try:
+            # Limit HTML content to avoid 500 errors
+            limited_content = html_content[:500] if len(html_content) > 500 else html_content
+            
+            # Prepare simple Turkish prompt for HTML analysis
+            prompt = f"""
+Web sitesi analizi:
+URL: {url}
+
+Bu web sitesi için test senaryoları öner.
+Basit JSON formatında yanıtla:
+{{
+    "buttons": ["Giriş", "Çıkış", "Ara"],
+    "forms": ["login", "search"],
+    "links": ["Ana Sayfa", "Hakkımızda"]
+}}
+"""
+            
+            return self._make_request(prompt)
+            
+        except Exception as e:
+            logger.error(f"Error in HTML analysis: {e}")
+            raise
     
-    async def generate_bdd_scenarios(self, analysis_result: Dict) -> AIResponse:
-        """Generate BDD scenarios based on HTML analysis"""
-        prompt = f"""
-        Bu web sitesi için basit BDD test senaryoları oluştur:
-        
-        Özellik: Web Sitesi Test Otomasyonu
-        Senaryo: Ana sayfa yüklenme testi
-        Diyelim ki kullanıcı web sitesini açar
-        Eğer sayfa yüklenirse
-        O zaman sayfa başlığı görünür olmalı
-        
-        Senaryo: Form testi
-        Diyelim ki kullanıcı forma tıklar
-        Eğer form açılırsa
-        O zaman form alanları görünür olmalı
-        
-        Senaryo: Link testi
-        Diyelim ki kullanıcı bir linke tıklar
-        Eğer link çalışırsa
-        O zaman yeni sayfa yüklenir
-        """
-        
-        return await self._make_request(prompt)
+    def generate_bdd_scenarios(self, html_analysis: Dict) -> AIResponse:
+        """Generate BDD scenarios from HTML analysis"""
+        try:
+            # Prepare simple Turkish prompt for BDD generation
+            prompt = f"""
+Bu e-ticaret sitesi için basit BDD senaryoları üret:
+
+Senaryo 1: Sayfa yükleme
+Given: Kullanıcı web sitesine girer
+When: Sayfa yüklenir
+Then: Başlık görünür
+
+Senaryo 2: Navigasyon
+Given: Kullanıcı ana sayfada
+When: Menüye tıklar
+Then: Menü açılır
+
+Senaryo 3: Buton testi
+Given: Kullanıcı sayfada
+When: Butona tıklar
+Then: İşlem gerçekleşir
+
+5 basit senaryo üret.
+"""
+            
+            return self._make_request(prompt)
+            
+        except Exception as e:
+            logger.error(f"Error in BDD scenario generation: {e}")
+            raise
     
     async def generate_automation_code(self, bdd_scenarios: str, framework: str = "selenium") -> AIResponse:
         """Generate automation code based on BDD scenarios"""
@@ -107,7 +123,7 @@ class AIClient:
         
         return await self._make_request(prompt)
     
-    async def _make_request(self, prompt: str) -> AIResponse:
+    def _make_request(self, prompt: str) -> AIResponse:
         """Make request to AI model"""
         payload = {
             "model": self.model_name,
@@ -119,13 +135,13 @@ class AIClient:
             }
         }
         
-        start_time = asyncio.get_event_loop().time()
+        start_time = time.time()
         
         try:
             logger.debug(f"Making request to {self.base_url}/api/generate with model: {self.model_name}")
             
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.post(
+            with httpx.Client(timeout=self.timeout) as client:
+                response = client.post(
                     f"{self.base_url}/api/generate",
                     json=payload
                 )
@@ -134,7 +150,7 @@ class AIClient:
                 response.raise_for_status()
                 
                 result = response.json()
-                end_time = asyncio.get_event_loop().time()
+                end_time = time.time()
                 
                 logger.debug(f"Response received successfully in {end_time - start_time:.2f}s")
                 

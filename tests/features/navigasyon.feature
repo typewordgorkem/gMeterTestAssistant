@@ -17,6 +17,13 @@
     Ve Sayfa başarıyla görüntülenir
 
   @navigation @link
+  Senaryo: 'Trendyol'da Satış Yap' linkine tıklama
+    Diyelim ki Kullanıcı ana sayfadadır
+    Eğer Kullanıcı 'Trendyol'da Satış Yap' linkine tıklar
+    O zaman Yeni sayfa yüklenir
+    Ve Sayfa başarıyla görüntülenir
+
+  @navigation @link
   Senaryo: 'Hakkımızda' linkine tıklama
     Diyelim ki Kullanıcı ana sayfadadır
     Eğer Kullanıcı 'Hakkımızda' linkine tıklar
@@ -27,12 +34,5 @@
   Senaryo: 'Yardım & Destek' linkine tıklama
     Diyelim ki Kullanıcı ana sayfadadır
     Eğer Kullanıcı 'Yardım & Destek' linkine tıklar
-    O zaman Yeni sayfa yüklenir
-    Ve Sayfa başarıyla görüntülenir
-
-  @navigation @link
-  Senaryo: '' linkine tıklama
-    Diyelim ki Kullanıcı ana sayfadadır
-    Eğer Kullanıcı '' linkine tıklar
     O zaman Yeni sayfa yüklenir
     Ve Sayfa başarıyla görüntülenir

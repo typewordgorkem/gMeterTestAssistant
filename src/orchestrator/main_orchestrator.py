@@ -134,12 +134,12 @@ class MainOrchestrator:
             # Cleanup
             self._cleanup()
     
-    async def _scrape_website(self, url: str) -> Dict:
+    def _scrape_website(self, url: str) -> Dict:
         """Scrape website and extract data"""
         scrape_start = time.time()
         
         try:
-            scraped_data = await self.web_scraper.scrape_website(url)
+            scraped_data = self.web_scraper.scrape_website(url)
             
             scrape_end = time.time()
             self.performance_metrics['page_load_time'] = scrape_end - scrape_start
@@ -166,7 +166,7 @@ class MainOrchestrator:
             logger.error(f"Error scraping website: {e}")
             raise
     
-    async def _analyze_with_ai(self, scraped_data: Dict, ai_model: str) -> Dict:
+    def _analyze_with_ai(self, scraped_data: Dict, ai_model: str) -> Dict:
         """Analyze scraped data with AI"""
         ai_start = time.time()
         
@@ -175,7 +175,7 @@ class MainOrchestrator:
             self.ai_client.set_model(ai_model)
             
             # HTML Analysis
-            html_analysis = await self.ai_client.analyze_html(
+            html_analysis = self.ai_client.analyze_html(
                 scraped_data['html_content'], 
                 scraped_data['url']
             )
@@ -194,7 +194,7 @@ class MainOrchestrator:
                 }
             
             # Generate BDD scenarios
-            bdd_response = await self.ai_client.generate_bdd_scenarios(html_analysis_dict)
+            bdd_response = self.ai_client.generate_bdd_scenarios(html_analysis_dict)
             
             ai_end = time.time()
             self.performance_metrics['ai_response_time'] = ai_end - ai_start
@@ -213,7 +213,7 @@ class MainOrchestrator:
             logger.error(f"Error in AI analysis: {e}")
             raise
     
-    async def _generate_bdd_scenarios(self, scraped_data: Dict, ai_analysis: Dict) -> List[Dict]:
+    def _generate_bdd_scenarios(self, scraped_data: Dict, ai_analysis: Dict) -> List[Dict]:
         """Generate BDD scenarios"""
         try:
             # Generate BDD features
@@ -254,8 +254,8 @@ class MainOrchestrator:
             logger.error(f"Error generating BDD scenarios: {e}")
             raise
     
-    async def _generate_test_code(self, bdd_features: List[Dict], scraped_data: Dict) -> str:
-        """Generate test automation code"""
+    def _generate_test_code(self, bdd_features: List[Dict], scraped_data: Dict) -> str:
+        """Generate test code"""
         try:
             # Generate test code
             test_code = self.test_generator.generate_test_code(bdd_features, scraped_data)
@@ -270,78 +270,42 @@ class MainOrchestrator:
             logger.error(f"Error generating test code: {e}")
             raise
     
-    async def _execute_tests(self, test_file_path: str, parallel: bool = True) -> Any:
-        """Execute generated tests"""
-        test_start = time.time()
-        
+    def _execute_tests(self, test_file_path: str) -> Any:
+        """Execute tests"""
         try:
             # Run tests
             test_results = self.test_generator.run_tests(test_file_path)
             
-            test_end = time.time()
-            self.performance_metrics['test_execution_time'] = test_end - test_start
-            
-            logger.info(f"Tests executed in {self.performance_metrics['test_execution_time']:.2f}s")
+            logger.info(f"Tests executed in {test_results.total_duration:.2f}s")
             return test_results
             
         except Exception as e:
             logger.error(f"Error executing tests: {e}")
             raise
     
-    async def _generate_reports(self, test_results: Any, bdd_features: List[Dict], 
-                               scraped_data: Dict, ai_analysis: Dict) -> Dict[str, str]:
-        """Generate comprehensive reports"""
+    def _generate_reports(self, test_results: Any, bdd_features: List[Dict], 
+                         scraped_data: Dict, ai_analysis: Dict) -> Dict[str, str]:
+        """Generate reports"""
         try:
-            # Create report data
+            # Create report data using the report generator's helper method
             report_data = self.report_generator.create_report_data(
                 test_results, bdd_features, scraped_data, ai_analysis, self.performance_metrics
             )
             
-            # Generate reports
-            reports = self.report_generator.generate_comprehensive_report(report_data)
+            # Generate comprehensive report
+            generated_reports = self.report_generator.generate_comprehensive_report(report_data)
             
-            logger.info(f"Generated {len(reports)} reports")
-            return reports
+            logger.info(f"Reports generated successfully")
+            return generated_reports
             
         except Exception as e:
             logger.error(f"Error generating reports: {e}")
             raise
     
-    async def _save_artifacts(self, scraped_data: Dict, ai_analysis: Dict, 
-                             bdd_features: List[Dict], test_results: Any, 
-                             output_dir: str) -> bool:
-        """Save all artifacts"""
-        try:
-            os.makedirs(output_dir, exist_ok=True)
-            
-            # Save scraped data
-            with open(f"{output_dir}/scraped_data.json", 'w', encoding='utf-8') as f:
-                json.dump(scraped_data, f, indent=2, ensure_ascii=False)
-            
-            # Save AI analysis
-            with open(f"{output_dir}/ai_analysis.json", 'w', encoding='utf-8') as f:
-                json.dump(ai_analysis, f, indent=2, ensure_ascii=False)
-            
-            # Save BDD features
-            with open(f"{output_dir}/bdd_features.json", 'w', encoding='utf-8') as f:
-                json.dump(bdd_features, f, indent=2, ensure_ascii=False)
-            
-            # Save performance metrics
-            with open(f"{output_dir}/performance_metrics.json", 'w', encoding='utf-8') as f:
-                json.dump(self.performance_metrics, f, indent=2, ensure_ascii=False, default=str)
-            
-            logger.info(f"Artifacts saved to: {output_dir}")
-            return True
-            
-        except Exception as e:
-            logger.error(f"Error saving artifacts: {e}")
-            return False
-    
-    async def _cleanup(self):
+    def _cleanup(self):
         """Cleanup resources"""
         try:
-            # Close web scraper
-            if hasattr(self.web_scraper, 'close'):
+            if hasattr(self, 'web_scraper'):
                 self.web_scraper.close()
             
             logger.info("Cleanup completed")
@@ -369,53 +333,29 @@ class MainOrchestrator:
         logger.info("Configuration validation passed")
         return True
     
-    async def quick_test(self, url: str, ai_model: str = None) -> Dict:
-        """Run a quick test without full automation"""
+    def quick_test(self, url: str, ai_model: str = None) -> bool:
+        """Run quick test (scraping and AI analysis only)"""
         logger.info(f"Running quick test for: {url}")
         
+        if not ai_model:
+            ai_model = self.config.get('ai', {}).get('model', 'llama3:latest')
+        
         try:
-            # Use default model if not specified
-            if not ai_model:
-                ai_model = self.config['ai']['model_name']
+            # Step 1: Scrape website
+            scraped_data = self._scrape_website(url)
             
-            # Quick scraping
-            scraped_data = await self._scrape_website(url)
+            # Step 2: AI Analysis
+            ai_analysis = self._analyze_with_ai(scraped_data, ai_model)
             
-            # Quick AI analysis
-            ai_analysis = await self._analyze_with_ai(scraped_data, ai_model)
-            
-            # Safe extraction of data
-            title = scraped_data.get('title', 'N/A')
-            forms_count = len(scraped_data.get('forms', []))
-            links_count = len(scraped_data.get('links', []))
-            buttons_count = len(scraped_data.get('buttons', []))
-            
-            # Safe extraction of AI analysis
-            analysis_preview = ""
-            if 'bdd_scenarios' in ai_analysis:
-                analysis_preview = str(ai_analysis['bdd_scenarios'])[:500]
-            elif 'raw_response' in ai_analysis:
-                analysis_preview = str(ai_analysis['raw_response'])[:500]
-            
-            logger.info(f"Quick test completed successfully for: {url}")
-            
-            return {
-                'success': True,
-                'url': url,
-                'title': title,
-                'forms_count': forms_count,
-                'links_count': links_count,
-                'buttons_count': buttons_count,
-                'ai_model': ai_model,
-                'analysis_preview': analysis_preview
-            }
+            logger.info("Quick test completed successfully")
+            return True
             
         except Exception as e:
             logger.error(f"Error in quick test: {e}")
-            return {
-                'success': False,
-                'error': str(e)
-            }
+            return False
+        
+        finally:
+            self._cleanup()
     
     def get_execution_status(self) -> Dict:
         """Get current execution status"""

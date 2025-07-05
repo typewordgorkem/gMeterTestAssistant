@@ -166,3 +166,315 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-07-05 19:56:31 | INFO     | src.scraper.web_scraper:close:367 - WebDriver closed
 2025-07-05 19:56:31 | INFO     | src.orchestrator.main_orchestrator:_cleanup:376 - Cleanup completed
 2025-07-05 19:56:31 | ERROR    | __main__:run_full_automation:181 - ❌ Automation failed!
+2025-07-05 21:54:41 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 21:54:41 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 21:54:41 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 21:54:41 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 21:54:41 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 0.00s
+2025-07-05 21:54:41 | ERROR    | src.orchestrator.main_orchestrator:_scrape_website:166 - Error scraping website: 'coroutine' object has no attribute 'url'
+2025-07-05 21:54:41 | ERROR    | src.orchestrator.main_orchestrator:execute_full_automation:130 - Error during automation execution: 'coroutine' object has no attribute 'url'
+2025-07-05 21:54:41 | INFO     | src.orchestrator.main_orchestrator:_cleanup:317 - Cleanup completed
+2025-07-05 21:54:41 | ERROR    | __main__:run_full_automation:98 - ❌ Automation failed!
+2025-07-05 21:56:54 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 21:56:54 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 21:56:54 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 21:56:54 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 21:56:54 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 21:56:54 | ERROR    | src.scraper.web_scraper:scrape_website:151 - Error scraping website https://www.trendyol.com/: 'NoneType' object has no attribute 'get'
+2025-07-05 21:56:54 | ERROR    | src.orchestrator.main_orchestrator:_scrape_website:166 - Error scraping website: 'NoneType' object has no attribute 'get'
+2025-07-05 21:56:54 | ERROR    | src.orchestrator.main_orchestrator:execute_full_automation:130 - Error during automation execution: 'NoneType' object has no attribute 'get'
+2025-07-05 21:56:54 | INFO     | src.orchestrator.main_orchestrator:_cleanup:317 - Cleanup completed
+2025-07-05 21:56:54 | ERROR    | __main__:run_full_automation:98 - ❌ Automation failed!
+2025-07-05 22:03:46 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 22:03:46 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 22:03:46 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 22:03:46 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 22:03:46 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 22:03:47 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 22:04:02 | INFO     | src.scraper.web_scraper:scrape_website:151 - Successfully scraped https://www.trendyol.com/ in 16.03s
+2025-07-05 22:04:02 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 16.03s
+2025-07-05 22:04:02 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:101 - Step 2: AI Analysis
+2025-07-05 22:04:02 | INFO     | src.ai.ai_client:set_model:207 - AI model changed to: llama3:latest
+2025-07-05 22:04:02 | DEBUG    | src.ai.ai_client:_make_request:171 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:04:07 | DEBUG    | src.ai.ai_client:_make_request:179 - Response status: 500
+2025-07-05 22:04:07 | ERROR    | src.ai.ai_client:_make_request:198 - HTTP error: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:04:07 | ERROR    | src.ai.ai_client:analyze_html:93 - Error in HTML analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:04:07 | ERROR    | src.orchestrator.main_orchestrator:_analyze_with_ai:213 - Error in AI analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:04:07 | ERROR    | src.orchestrator.main_orchestrator:execute_full_automation:130 - Error during automation execution: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:04:07 | INFO     | src.scraper.web_scraper:close:349 - WebDriver closed
+2025-07-05 22:04:07 | INFO     | src.orchestrator.main_orchestrator:_cleanup:317 - Cleanup completed
+2025-07-05 22:04:07 | ERROR    | __main__:run_full_automation:98 - ❌ Automation failed!
+2025-07-05 22:06:14 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 22:06:14 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 22:06:14 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 22:06:14 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 22:06:14 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 22:06:15 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 22:06:30 | INFO     | src.scraper.web_scraper:scrape_website:151 - Successfully scraped https://www.trendyol.com/ in 16.02s
+2025-07-05 22:06:30 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 16.02s
+2025-07-05 22:06:30 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:101 - Step 2: AI Analysis
+2025-07-05 22:06:30 | INFO     | src.ai.ai_client:set_model:207 - AI model changed to: llama3:latest
+2025-07-05 22:06:30 | DEBUG    | src.ai.ai_client:_make_request:171 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:06:33 | DEBUG    | src.ai.ai_client:_make_request:179 - Response status: 500
+2025-07-05 22:06:33 | ERROR    | src.ai.ai_client:_make_request:198 - HTTP error: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:06:33 | ERROR    | src.ai.ai_client:analyze_html:93 - Error in HTML analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:06:33 | ERROR    | src.orchestrator.main_orchestrator:_analyze_with_ai:213 - Error in AI analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:06:33 | ERROR    | src.orchestrator.main_orchestrator:execute_full_automation:130 - Error during automation execution: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:06:34 | INFO     | src.scraper.web_scraper:close:349 - WebDriver closed
+2025-07-05 22:06:34 | INFO     | src.orchestrator.main_orchestrator:_cleanup:317 - Cleanup completed
+2025-07-05 22:06:34 | ERROR    | __main__:run_full_automation:98 - ❌ Automation failed!
+2025-07-05 22:08:22 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 22:08:22 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 22:08:22 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 22:08:22 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 22:08:22 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 22:08:24 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 22:08:39 | INFO     | src.scraper.web_scraper:scrape_website:151 - Successfully scraped https://www.trendyol.com/ in 16.90s
+2025-07-05 22:08:39 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 16.90s
+2025-07-05 22:08:39 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:101 - Step 2: AI Analysis
+2025-07-05 22:08:39 | INFO     | src.ai.ai_client:set_model:177 - AI model changed to: llama3:latest
+2025-07-05 22:08:39 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:08:59 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 200
+2025-07-05 22:08:59 | DEBUG    | src.ai.ai_client:_make_request:155 - Response received successfully in 20.07s
+2025-07-05 22:08:59 | WARNING  | src.orchestrator.main_orchestrator:_analyze_with_ai:187 - AI response not in JSON format, using raw response
+2025-07-05 22:08:59 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:09:13 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 200
+2025-07-05 22:09:13 | DEBUG    | src.ai.ai_client:_make_request:155 - Response received successfully in 14.13s
+2025-07-05 22:09:13 | INFO     | src.orchestrator.main_orchestrator:_analyze_with_ai:202 - AI analysis completed in 34.20s
+2025-07-05 22:09:13 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:105 - Step 3: BDD Generation
+2025-07-05 22:09:13 | INFO     | src.bdd.bdd_generator:generate_bdd_from_analysis:63 - Generating BDD scenarios from AI analysis
+2025-07-05 22:09:13 | INFO     | src.bdd.bdd_generator:generate_bdd_from_analysis:77 - Generated 1 BDD features with 5 scenarios
+2025-07-05 22:09:13 | INFO     | src.bdd.bdd_generator:generate_feature_file:316 - Feature file generated: tests/features/navigasyon.feature
+2025-07-05 22:09:13 | INFO     | src.orchestrator.main_orchestrator:_generate_bdd_scenarios:250 - Generated 1 BDD features
+2025-07-05 22:09:13 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:109 - Step 4: Test Code Generation
+2025-07-05 22:09:13 | INFO     | src.automation.test_generator:generate_test_code:77 - Generating test automation code
+2025-07-05 22:09:13 | INFO     | src.automation.test_generator:save_test_code:486 - Test code saved: tests/generated/test_website.py
+2025-07-05 22:09:13 | INFO     | src.orchestrator.main_orchestrator:_generate_test_code:266 - Test code generated and saved: tests/generated/test_website.py
+2025-07-05 22:09:13 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:113 - Step 5: Test Execution
+2025-07-05 22:09:13 | INFO     | src.automation.test_generator:run_tests:491 - Running tests from: tests/generated/test_website.py
+2025-07-05 22:09:14 | INFO     | src.automation.test_generator:run_tests:536 - Tests completed. Passed: 0, Failed: 0, Skipped: 1
+2025-07-05 22:09:14 | INFO     | src.orchestrator.main_orchestrator:_execute_tests:279 - Tests executed in 0.30s
+2025-07-05 22:09:14 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:117 - Step 6: Report Generation
+2025-07-05 22:09:14 | ERROR    | src.orchestrator.main_orchestrator:_generate_reports:308 - Error generating reports: ReportGenerator.generate_comprehensive_report() takes 2 positional arguments but 5 were given
+2025-07-05 22:09:14 | ERROR    | src.orchestrator.main_orchestrator:execute_full_automation:130 - Error during automation execution: ReportGenerator.generate_comprehensive_report() takes 2 positional arguments but 5 were given
+2025-07-05 22:09:14 | INFO     | src.scraper.web_scraper:close:349 - WebDriver closed
+2025-07-05 22:09:14 | INFO     | src.orchestrator.main_orchestrator:_cleanup:317 - Cleanup completed
+2025-07-05 22:09:14 | ERROR    | __main__:run_full_automation:98 - ❌ Automation failed!
+2025-07-05 22:11:10 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 22:11:10 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 22:11:10 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 22:11:10 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 22:11:10 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 22:11:11 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 22:11:26 | INFO     | src.scraper.web_scraper:scrape_website:151 - Successfully scraped https://www.trendyol.com/ in 16.56s
+2025-07-05 22:11:26 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 16.56s
+2025-07-05 22:11:26 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:101 - Step 2: AI Analysis
+2025-07-05 22:11:26 | INFO     | src.ai.ai_client:set_model:177 - AI model changed to: llama3:latest
+2025-07-05 22:11:26 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:11:48 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 200
+2025-07-05 22:11:48 | DEBUG    | src.ai.ai_client:_make_request:155 - Response received successfully in 21.82s
+2025-07-05 22:11:48 | WARNING  | src.orchestrator.main_orchestrator:_analyze_with_ai:187 - AI response not in JSON format, using raw response
+2025-07-05 22:11:48 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:12:02 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 200
+2025-07-05 22:12:02 | DEBUG    | src.ai.ai_client:_make_request:155 - Response received successfully in 13.74s
+2025-07-05 22:12:02 | INFO     | src.orchestrator.main_orchestrator:_analyze_with_ai:202 - AI analysis completed in 35.57s
+2025-07-05 22:12:02 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:105 - Step 3: BDD Generation
+2025-07-05 22:12:02 | INFO     | src.bdd.bdd_generator:generate_bdd_from_analysis:63 - Generating BDD scenarios from AI analysis
+2025-07-05 22:12:02 | INFO     | src.bdd.bdd_generator:generate_bdd_from_analysis:77 - Generated 1 BDD features with 5 scenarios
+2025-07-05 22:12:02 | INFO     | src.bdd.bdd_generator:generate_feature_file:316 - Feature file generated: tests/features/navigasyon.feature
+2025-07-05 22:12:02 | INFO     | src.orchestrator.main_orchestrator:_generate_bdd_scenarios:250 - Generated 1 BDD features
+2025-07-05 22:12:02 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:109 - Step 4: Test Code Generation
+2025-07-05 22:12:02 | INFO     | src.automation.test_generator:generate_test_code:77 - Generating test automation code
+2025-07-05 22:12:02 | INFO     | src.automation.test_generator:save_test_code:486 - Test code saved: tests/generated/test_website.py
+2025-07-05 22:12:02 | INFO     | src.orchestrator.main_orchestrator:_generate_test_code:266 - Test code generated and saved: tests/generated/test_website.py
+2025-07-05 22:12:02 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:113 - Step 5: Test Execution
+2025-07-05 22:12:02 | INFO     | src.automation.test_generator:run_tests:491 - Running tests from: tests/generated/test_website.py
+2025-07-05 22:12:02 | INFO     | src.automation.test_generator:run_tests:536 - Tests completed. Passed: 0, Failed: 0, Skipped: 1
+2025-07-05 22:12:02 | INFO     | src.orchestrator.main_orchestrator:_execute_tests:279 - Tests executed in 0.30s
+2025-07-05 22:12:02 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:117 - Step 6: Report Generation
+2025-07-05 22:12:02 | INFO     | src.reporting.report_generator:generate_comprehensive_report:68 - Generating comprehensive automation report
+2025-07-05 22:12:02 | INFO     | src.reporting.report_generator:generate_html_report:92 - Generating HTML report
+2025-07-05 22:12:03 | INFO     | src.reporting.report_generator:generate_html_report:105 - HTML report generated: reports/automation_report.html
+2025-07-05 22:12:03 | INFO     | src.reporting.report_generator:generate_json_report:110 - Generating JSON report
+2025-07-05 22:12:03 | INFO     | src.reporting.report_generator:generate_json_report:127 - JSON report generated: reports/automation_report.json
+2025-07-05 22:12:03 | INFO     | src.reporting.report_generator:generate_pdf_report:132 - Generating PDF report
+2025-07-05 22:12:03 | INFO     | src.reporting.report_generator:generate_html_report:92 - Generating HTML report
+2025-07-05 22:12:03 | INFO     | src.reporting.report_generator:generate_html_report:105 - HTML report generated: reports/automation_report.html
+2025-07-05 22:12:03 | INFO     | src.reporting.report_generator:generate_pdf_report:145 - PDF report generated: reports/automation_report.pdf
+2025-07-05 22:12:03 | INFO     | src.reporting.report_generator:generate_comprehensive_report:87 - Generated 3 report formats
+2025-07-05 22:12:03 | INFO     | src.orchestrator.main_orchestrator:_generate_reports:298 - Reports generated successfully
+2025-07-05 22:12:03 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:125 - Full automation completed in 52.67s
+2025-07-05 22:12:03 | INFO     | src.scraper.web_scraper:close:349 - WebDriver closed
+2025-07-05 22:12:03 | INFO     | src.orchestrator.main_orchestrator:_cleanup:311 - Cleanup completed
+2025-07-05 22:12:03 | INFO     | __main__:run_full_automation:94 - ✅ Automation completed successfully!
+2025-07-05 22:16:58 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 22:16:58 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 22:16:58 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 22:16:58 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 22:16:58 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 22:16:59 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 22:17:14 | INFO     | src.scraper.web_scraper:scrape_website:151 - Successfully scraped https://www.trendyol.com/ in 16.06s
+2025-07-05 22:17:14 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 16.06s
+2025-07-05 22:17:14 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:101 - Step 2: AI Analysis
+2025-07-05 22:17:14 | INFO     | src.ai.ai_client:set_model:177 - AI model changed to: llama3:latest
+2025-07-05 22:17:14 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:17:17 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 500
+2025-07-05 22:17:17 | ERROR    | src.ai.ai_client:_make_request:168 - HTTP error: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:17:17 | ERROR    | src.ai.ai_client:analyze_html:69 - Error in HTML analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:17:17 | ERROR    | src.orchestrator.main_orchestrator:_analyze_with_ai:213 - Error in AI analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:17:17 | ERROR    | src.orchestrator.main_orchestrator:execute_full_automation:130 - Error during automation execution: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:17:18 | INFO     | src.scraper.web_scraper:close:349 - WebDriver closed
+2025-07-05 22:17:18 | INFO     | src.orchestrator.main_orchestrator:_cleanup:311 - Cleanup completed
+2025-07-05 22:17:18 | ERROR    | __main__:run_full_automation:98 - ❌ Automation failed!
+2025-07-05 22:23:16 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 22:23:16 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 22:23:16 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 22:23:16 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 22:23:16 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 22:23:17 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 22:23:33 | INFO     | src.scraper.web_scraper:scrape_website:151 - Successfully scraped https://www.trendyol.com/ in 16.33s
+2025-07-05 22:23:33 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 16.33s
+2025-07-05 22:23:33 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:101 - Step 2: AI Analysis
+2025-07-05 22:23:33 | INFO     | src.ai.ai_client:set_model:177 - AI model changed to: llama3:latest
+2025-07-05 22:23:33 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:23:53 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 200
+2025-07-05 22:23:53 | DEBUG    | src.ai.ai_client:_make_request:155 - Response received successfully in 19.92s
+2025-07-05 22:23:53 | WARNING  | src.orchestrator.main_orchestrator:_analyze_with_ai:187 - AI response not in JSON format, using raw response
+2025-07-05 22:23:53 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:24:08 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 200
+2025-07-05 22:24:08 | DEBUG    | src.ai.ai_client:_make_request:155 - Response received successfully in 14.83s
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:_analyze_with_ai:202 - AI analysis completed in 34.75s
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:105 - Step 3: BDD Generation
+2025-07-05 22:24:08 | INFO     | src.bdd.bdd_generator:generate_bdd_from_analysis:63 - Generating BDD scenarios from AI analysis
+2025-07-05 22:24:08 | INFO     | src.bdd.bdd_generator:generate_bdd_from_analysis:77 - Generated 1 BDD features with 5 scenarios
+2025-07-05 22:24:08 | INFO     | src.bdd.bdd_generator:generate_feature_file:316 - Feature file generated: tests/features/navigasyon.feature
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:_generate_bdd_scenarios:250 - Generated 1 BDD features
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:109 - Step 4: Test Code Generation
+2025-07-05 22:24:08 | INFO     | src.automation.test_generator:generate_test_code:77 - Generating test automation code
+2025-07-05 22:24:08 | INFO     | src.automation.test_generator:save_test_code:486 - Test code saved: tests/generated/test_website.py
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:_generate_test_code:266 - Test code generated and saved: tests/generated/test_website.py
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:113 - Step 5: Test Execution
+2025-07-05 22:24:08 | INFO     | src.automation.test_generator:run_tests:491 - Running tests from: tests/generated/test_website.py
+2025-07-05 22:24:08 | INFO     | src.automation.test_generator:run_tests:536 - Tests completed. Passed: 0, Failed: 0, Skipped: 1
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:_execute_tests:279 - Tests executed in 0.30s
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:117 - Step 6: Report Generation
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_comprehensive_report:68 - Generating comprehensive automation report
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_html_report:92 - Generating HTML report
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_html_report:105 - HTML report generated: reports/automation_report.html
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_json_report:110 - Generating JSON report
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_json_report:127 - JSON report generated: reports/automation_report.json
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_pdf_report:132 - Generating PDF report
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_html_report:92 - Generating HTML report
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_html_report:105 - HTML report generated: reports/automation_report.html
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_pdf_report:145 - PDF report generated: reports/automation_report.pdf
+2025-07-05 22:24:08 | INFO     | src.reporting.report_generator:generate_comprehensive_report:87 - Generated 3 report formats
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:_generate_reports:298 - Reports generated successfully
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:125 - Full automation completed in 51.62s
+2025-07-05 22:24:08 | INFO     | src.scraper.web_scraper:close:349 - WebDriver closed
+2025-07-05 22:24:08 | INFO     | src.orchestrator.main_orchestrator:_cleanup:311 - Cleanup completed
+2025-07-05 22:24:08 | INFO     | __main__:run_full_automation:94 - ✅ Automation completed successfully!
+2025-07-05 22:28:45 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 22:28:45 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 22:28:45 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 22:28:45 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 22:28:45 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 22:28:46 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 22:29:01 | INFO     | src.scraper.web_scraper:scrape_website:151 - Successfully scraped https://www.trendyol.com/ in 16.35s
+2025-07-05 22:29:01 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 16.35s
+2025-07-05 22:29:01 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:101 - Step 2: AI Analysis
+2025-07-05 22:29:01 | INFO     | src.ai.ai_client:set_model:177 - AI model changed to: llama3:latest
+2025-07-05 22:29:01 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:29:17 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 200
+2025-07-05 22:29:17 | DEBUG    | src.ai.ai_client:_make_request:155 - Response received successfully in 15.60s
+2025-07-05 22:29:17 | WARNING  | src.orchestrator.main_orchestrator:_analyze_with_ai:187 - AI response not in JSON format, using raw response
+2025-07-05 22:29:17 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:29:31 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 200
+2025-07-05 22:29:31 | DEBUG    | src.ai.ai_client:_make_request:155 - Response received successfully in 14.34s
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:_analyze_with_ai:202 - AI analysis completed in 29.94s
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:105 - Step 3: BDD Generation
+2025-07-05 22:29:31 | INFO     | src.bdd.bdd_generator:generate_bdd_from_analysis:63 - Generating BDD scenarios from AI analysis
+2025-07-05 22:29:31 | INFO     | src.bdd.bdd_generator:generate_bdd_from_analysis:77 - Generated 1 BDD features with 5 scenarios
+2025-07-05 22:29:31 | INFO     | src.bdd.bdd_generator:generate_feature_file:316 - Feature file generated: tests/features/navigasyon.feature
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:_generate_bdd_scenarios:250 - Generated 1 BDD features
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:109 - Step 4: Test Code Generation
+2025-07-05 22:29:31 | INFO     | src.automation.test_generator:generate_test_code:77 - Generating test automation code
+2025-07-05 22:29:31 | INFO     | src.automation.test_generator:save_test_code:486 - Test code saved: tests/generated/test_website.py
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:_generate_test_code:266 - Test code generated and saved: tests/generated/test_website.py
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:113 - Step 5: Test Execution
+2025-07-05 22:29:31 | INFO     | src.automation.test_generator:run_tests:491 - Running tests from: tests/generated/test_website.py
+2025-07-05 22:29:31 | INFO     | src.automation.test_generator:run_tests:536 - Tests completed. Passed: 0, Failed: 0, Skipped: 1
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:_execute_tests:279 - Tests executed in 0.29s
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:117 - Step 6: Report Generation
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_comprehensive_report:68 - Generating comprehensive automation report
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_html_report:92 - Generating HTML report
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_html_report:105 - HTML report generated: reports/automation_report.html
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_json_report:110 - Generating JSON report
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_json_report:127 - JSON report generated: reports/automation_report.json
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_pdf_report:132 - Generating PDF report
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_html_report:92 - Generating HTML report
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_html_report:105 - HTML report generated: reports/automation_report.html
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_pdf_report:145 - PDF report generated: reports/automation_report.pdf
+2025-07-05 22:29:31 | INFO     | src.reporting.report_generator:generate_comprehensive_report:87 - Generated 3 report formats
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:_generate_reports:298 - Reports generated successfully
+2025-07-05 22:29:31 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:125 - Full automation completed in 46.84s
+2025-07-05 22:29:32 | INFO     | src.scraper.web_scraper:close:349 - WebDriver closed
+2025-07-05 22:29:32 | INFO     | src.orchestrator.main_orchestrator:_cleanup:311 - Cleanup completed
+2025-07-05 22:29:32 | INFO     | __main__:run_full_automation:94 - ✅ Automation completed successfully!
+2025-07-05 22:56:47 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 22:56:47 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 22:56:47 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 22:56:47 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 22:56:47 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 22:56:48 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 22:57:03 | INFO     | src.scraper.web_scraper:scrape_website:151 - Successfully scraped https://www.trendyol.com/ in 15.88s
+2025-07-05 22:57:03 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 15.89s
+2025-07-05 22:57:03 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:101 - Step 2: AI Analysis
+2025-07-05 22:57:03 | INFO     | src.ai.ai_client:set_model:177 - AI model changed to: llama3:latest
+2025-07-05 22:57:03 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 22:57:08 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 500
+2025-07-05 22:57:08 | ERROR    | src.ai.ai_client:_make_request:168 - HTTP error: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:57:08 | ERROR    | src.ai.ai_client:analyze_html:69 - Error in HTML analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:57:08 | ERROR    | src.orchestrator.main_orchestrator:_analyze_with_ai:213 - Error in AI analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:57:08 | ERROR    | src.orchestrator.main_orchestrator:execute_full_automation:130 - Error during automation execution: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 22:57:08 | INFO     | src.scraper.web_scraper:close:349 - WebDriver closed
+2025-07-05 22:57:08 | INFO     | src.orchestrator.main_orchestrator:_cleanup:311 - Cleanup completed
+2025-07-05 22:57:08 | ERROR    | __main__:run_full_automation:98 - ❌ Automation failed!
+2025-07-05 23:00:00 | INFO     | __main__:run_full_automation:83 - Starting full automation workflow
+2025-07-05 23:00:00 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 23:00:00 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:90 - Starting full automation for: https://www.trendyol.com/
+2025-07-05 23:00:00 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:97 - Step 1: Web Scraping
+2025-07-05 23:00:00 | INFO     | src.scraper.web_scraper:scrape_website:100 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 23:00:02 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 23:00:16 | INFO     | src.scraper.web_scraper:scrape_website:151 - Successfully scraped https://www.trendyol.com/ in 16.15s
+2025-07-05 23:00:16 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:147 - Website scraped successfully in 16.16s
+2025-07-05 23:00:16 | INFO     | src.orchestrator.main_orchestrator:execute_full_automation:101 - Step 2: AI Analysis
+2025-07-05 23:00:16 | INFO     | src.ai.ai_client:set_model:177 - AI model changed to: llama3:latest
+2025-07-05 23:00:16 | DEBUG    | src.ai.ai_client:_make_request:141 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 23:00:21 | DEBUG    | src.ai.ai_client:_make_request:149 - Response status: 500
+2025-07-05 23:00:21 | ERROR    | src.ai.ai_client:_make_request:168 - HTTP error: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 23:00:21 | ERROR    | src.ai.ai_client:analyze_html:69 - Error in HTML analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 23:00:21 | ERROR    | src.orchestrator.main_orchestrator:_analyze_with_ai:213 - Error in AI analysis: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 23:00:21 | ERROR    | src.orchestrator.main_orchestrator:execute_full_automation:130 - Error during automation execution: Server error '500 Internal Server Error' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+2025-07-05 23:00:21 | INFO     | src.scraper.web_scraper:close:349 - WebDriver closed
+2025-07-05 23:00:21 | INFO     | src.orchestrator.main_orchestrator:_cleanup:311 - Cleanup completed
+2025-07-05 23:00:21 | ERROR    | __main__:run_full_automation:98 - ❌ Automation failed!

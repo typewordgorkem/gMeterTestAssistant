@@ -1,0 +1,36 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.3, pytest-8.4.1, pluggy-1.6.0 -- /Users/gorkemagkurt/Desktop/Projects/gMeterTestAssistant/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/gorkemagkurt/Desktop/Projects/gMeterTestAssistant
+plugins: anyio-4.9.0
+collecting ... collected 5 items
+
+tests/generated/test_website.py::TestWebsite::test_page_load PASSED      [ 20%]
+tests/generated/test_website.py::TestWebsite::test_accept_cookies PASSED [ 40%]
+tests/generated/test_website.py::TestWebsite::test_navigation_links PASSED [ 60%]
+tests/generated/test_website.py::TestWebsite::test_page_elements PASSED  [ 80%]
+tests/generated/test_website.py::TestWebsite::test_responsive_design PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/generated/test_website.py:130
+  /Users/gorkemagkurt/Desktop/Projects/gMeterTestAssistant/tests/generated/test_website.py:130: PytestUnknownMarkWarning: Unknown pytest.mark.functional - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.functional
+
+tests/generated/test_website.py:149
+  /Users/gorkemagkurt/Desktop/Projects/gMeterTestAssistant/tests/generated/test_website.py:149: PytestUnknownMarkWarning: Unknown pytest.mark.functional - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.functional
+
+tests/generated/test_website.py:172
+  /Users/gorkemagkurt/Desktop/Projects/gMeterTestAssistant/tests/generated/test_website.py:172: PytestUnknownMarkWarning: Unknown pytest.mark.functional - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.functional
+
+tests/generated/test_website.py:204
+  /Users/gorkemagkurt/Desktop/Projects/gMeterTestAssistant/tests/generated/test_website.py:204: PytestUnknownMarkWarning: Unknown pytest.mark.functional - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.functional
+
+tests/generated/test_website.py:228
+  /Users/gorkemagkurt/Desktop/Projects/gMeterTestAssistant/tests/generated/test_website.py:228: PytestUnknownMarkWarning: Unknown pytest.mark.functional - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.functional
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 5 passed, 5 warnings in 31.97s ========================
