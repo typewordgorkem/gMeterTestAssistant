@@ -1,0 +1,45 @@
+# AI Model Configuration
+ai:
+  provider: "ollama" # ollama, localai, custom
+  model_name: "llama3:latest" # Default model
+  api_url: "http://localhost:11434" # Ollama default
+  temperature: 0.7
+  max_tokens: 2048
+  timeout: 60
+
+# Web Scraping Configuration
+scraper:
+  browser: "chrome" # chrome, firefox, edge
+  headless: true
+  timeout: 30
+  wait_time: 2
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+
+# BDD Configuration
+bdd:
+  language: "turkish" # turkish, english
+  scenario_count: 10 # Default scenarios to generate
+  include_negative_tests: true
+  include_performance_tests: true
+
+# Automation Configuration
+automation:
+  framework: "selenium" # selenium, playwright
+  parallel_execution: true
+  max_workers: 4
+  screenshot_on_failure: true
+  video_recording: false
+
+# Reporting Configuration
+reporting:
+  format: ["html", "json", "pdf"]
+  include_screenshots: true
+  include_logs: true
+  template: "default"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  file: "logs/app.log"
+  max_size: "10MB"
+  backup_count: 5

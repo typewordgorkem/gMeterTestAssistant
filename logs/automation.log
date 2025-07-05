@@ -1,0 +1,61 @@
+2025-07-05 18:54:58 | INFO     | __main__:run_quick_test:188 - Starting quick test
+2025-07-05 18:54:58 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 18:54:58 | INFO     | src.orchestrator.main_orchestrator:quick_test:397 - Running quick test for: https://www.trendyol.com/
+2025-07-05 18:55:01 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 18:55:01 | INFO     | src.scraper.web_scraper:scrape_website:106 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 18:55:04 | INFO     | src.scraper.web_scraper:scrape_website:139 - Successfully scraped https://www.trendyol.com/ in 3.15s
+2025-07-05 18:55:04 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:176 - Website scraped successfully in 6.25s
+2025-07-05 18:55:04 | INFO     | src.ai.ai_client:set_model:190 - AI model changed to: llama2
+2025-07-05 18:55:04 | ERROR    | src.ai.ai_client:_make_request:181 - HTTP error: Client error '404 Not Found' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-07-05 18:55:04 | ERROR    | src.orchestrator.main_orchestrator:_analyze_with_ai:236 - Error in AI analysis: Client error '404 Not Found' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-07-05 18:55:04 | ERROR    | src.orchestrator.main_orchestrator:quick_test:422 - Error in quick test: Client error '404 Not Found' for url 'http://localhost:11434/api/generate'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+2025-07-05 18:55:04 | ERROR    | __main__:run_quick_test:206 - ❌ Quick test failed!
+2025-07-05 18:59:17 | INFO     | __main__:run_quick_test:188 - Starting quick test
+2025-07-05 18:59:17 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 18:59:17 | INFO     | src.orchestrator.main_orchestrator:quick_test:397 - Running quick test for: https://www.trendyol.com/
+2025-07-05 18:59:18 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 18:59:18 | INFO     | src.scraper.web_scraper:scrape_website:106 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 18:59:22 | INFO     | src.scraper.web_scraper:scrape_website:139 - Successfully scraped https://www.trendyol.com/ in 3.18s
+2025-07-05 18:59:22 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:176 - Website scraped successfully in 5.12s
+2025-07-05 18:59:22 | INFO     | src.ai.ai_client:set_model:190 - AI model changed to: llama3:latest
+2025-07-05 18:59:52 | ERROR    | src.ai.ai_client:_make_request:178 - Request error: 
+2025-07-05 18:59:52 | ERROR    | src.orchestrator.main_orchestrator:_analyze_with_ai:236 - Error in AI analysis: 
+2025-07-05 18:59:52 | ERROR    | src.orchestrator.main_orchestrator:quick_test:422 - Error in quick test: 
+2025-07-05 18:59:52 | ERROR    | __main__:run_quick_test:206 - ❌ Quick test failed!
+2025-07-05 19:10:31 | INFO     | __main__:run_quick_test:188 - Starting quick test
+2025-07-05 19:10:31 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 19:10:31 | INFO     | src.orchestrator.main_orchestrator:quick_test:397 - Running quick test for: https://www.trendyol.com/
+2025-07-05 19:10:32 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 19:10:32 | INFO     | src.scraper.web_scraper:scrape_website:106 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 19:10:36 | INFO     | src.scraper.web_scraper:scrape_website:139 - Successfully scraped https://www.trendyol.com/ in 3.08s
+2025-07-05 19:10:36 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:176 - Website scraped successfully in 4.43s
+2025-07-05 19:10:36 | INFO     | src.ai.ai_client:set_model:196 - AI model changed to: llama3:latest
+2025-07-05 19:10:36 | DEBUG    | src.ai.ai_client:_make_request:160 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 19:11:11 | DEBUG    | src.ai.ai_client:_make_request:168 - Response status: 200
+2025-07-05 19:11:11 | DEBUG    | src.ai.ai_client:_make_request:174 - Response received successfully in 35.13s
+2025-07-05 19:11:11 | WARNING  | src.orchestrator.main_orchestrator:_analyze_with_ai:216 - AI response not in JSON format, using raw response
+2025-07-05 19:11:11 | DEBUG    | src.ai.ai_client:_make_request:160 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 19:12:11 | ERROR    | src.ai.ai_client:_make_request:184 - Request error: 
+2025-07-05 19:12:11 | ERROR    | src.orchestrator.main_orchestrator:_analyze_with_ai:236 - Error in AI analysis: 
+2025-07-05 19:12:11 | ERROR    | src.orchestrator.main_orchestrator:quick_test:422 - Error in quick test: 
+2025-07-05 19:12:11 | ERROR    | __main__:run_quick_test:206 - ❌ Quick test failed!
+2025-07-05 19:13:23 | INFO     | __main__:run_quick_test:188 - Starting quick test
+2025-07-05 19:13:23 | INFO     | src.orchestrator.main_orchestrator:__init__:74 - Main Orchestrator initialized
+2025-07-05 19:13:23 | INFO     | src.orchestrator.main_orchestrator:quick_test:403 - Running quick test for: https://www.trendyol.com/
+2025-07-05 19:13:24 | INFO     | src.scraper.web_scraper:_setup_driver:96 - WebDriver setup completed: chrome
+2025-07-05 19:13:24 | INFO     | src.scraper.web_scraper:scrape_website:106 - Starting to scrape: https://www.trendyol.com/
+2025-07-05 19:13:28 | INFO     | src.scraper.web_scraper:scrape_website:139 - Successfully scraped https://www.trendyol.com/ in 3.42s
+2025-07-05 19:13:28 | INFO     | src.orchestrator.main_orchestrator:_scrape_website:176 - Website scraped successfully in 4.87s
+2025-07-05 19:13:28 | INFO     | src.ai.ai_client:set_model:191 - AI model changed to: llama3:latest
+2025-07-05 19:13:28 | DEBUG    | src.ai.ai_client:_make_request:155 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 19:14:19 | DEBUG    | src.ai.ai_client:_make_request:163 - Response status: 200
+2025-07-05 19:14:19 | DEBUG    | src.ai.ai_client:_make_request:169 - Response received successfully in 51.79s
+2025-07-05 19:14:19 | WARNING  | src.orchestrator.main_orchestrator:_analyze_with_ai:216 - AI response not in JSON format, using raw response
+2025-07-05 19:14:19 | DEBUG    | src.ai.ai_client:_make_request:155 - Making request to http://localhost:11434/api/generate with model: llama3:latest
+2025-07-05 19:14:41 | DEBUG    | src.ai.ai_client:_make_request:163 - Response status: 200
+2025-07-05 19:14:41 | DEBUG    | src.ai.ai_client:_make_request:169 - Response received successfully in 21.69s
+2025-07-05 19:14:41 | INFO     | src.orchestrator.main_orchestrator:_analyze_with_ai:231 - AI analysis completed in 73.48s
+2025-07-05 19:14:41 | INFO     | src.scraper.web_scraper:close:367 - WebDriver closed
