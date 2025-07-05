@@ -109,13 +109,20 @@ class ReportGenerator:
         """Generate JSON report"""
         logger.info("Generating JSON report")
         
+        # Custom JSON encoder for datetime objects
+        class DateTimeEncoder(json.JSONEncoder):
+            def default(self, obj):
+                if isinstance(obj, datetime):
+                    return obj.isoformat()
+                return super().default(obj)
+        
         # Convert dataclass to dict
         report_dict = asdict(report_data)
         
         # Save JSON report
         report_path = f"{self.output_dir}/automation_report.json"
         with open(report_path, 'w', encoding='utf-8') as f:
-            json.dump(report_dict, f, indent=2, ensure_ascii=False)
+            json.dump(report_dict, f, indent=2, ensure_ascii=False, cls=DateTimeEncoder)
         
         logger.info(f"JSON report generated: {report_path}")
         return report_path

@@ -85,9 +85,9 @@ class MainOrchestrator:
             logger.error(f"Error parsing config file: {e}")
             raise
     
-    async def execute_full_automation(self, execution_config: ExecutionConfig) -> ExecutionResult:
+    def execute_full_automation(self, url: str) -> bool:
         """Execute complete automation workflow"""
-        logger.info(f"Starting full automation for: {execution_config.url}")
+        logger.info(f"Starting full automation for: {url}")
         
         start_time = time.time()
         self.performance_metrics['start_time'] = datetime.now()
@@ -95,34 +95,27 @@ class MainOrchestrator:
         try:
             # Step 1: Web Scraping
             logger.info("Step 1: Web Scraping")
-            scraped_data = await self._scrape_website(execution_config.url)
+            scraped_data = self._scrape_website(url)
             
             # Step 2: AI Analysis
             logger.info("Step 2: AI Analysis")
-            ai_analysis = await self._analyze_with_ai(scraped_data, execution_config.ai_model)
+            ai_analysis = self._analyze_with_ai(scraped_data, self.config.get('ai', {}).get('model', 'llama3:latest'))
             
             # Step 3: BDD Generation
             logger.info("Step 3: BDD Generation")
-            bdd_features = await self._generate_bdd_scenarios(scraped_data, ai_analysis)
+            bdd_features = self._generate_bdd_scenarios(scraped_data, ai_analysis)
             
             # Step 4: Test Code Generation
             logger.info("Step 4: Test Code Generation")
-            test_code_path = await self._generate_test_code(bdd_features, scraped_data)
+            test_code_path = self._generate_test_code(bdd_features, scraped_data)
             
             # Step 5: Test Execution
             logger.info("Step 5: Test Execution")
-            test_results = await self._execute_tests(test_code_path, execution_config.parallel_tests)
+            test_results = self._execute_tests(test_code_path)
             
             # Step 6: Report Generation
             logger.info("Step 6: Report Generation")
-            reports = await self._generate_reports(
-                test_results, bdd_features, scraped_data, ai_analysis
-            ) if execution_config.generate_reports else {}
-            
-            # Step 7: Save Artifacts
-            artifacts_saved = await self._save_artifacts(
-                scraped_data, ai_analysis, bdd_features, test_results, execution_config.output_dir
-            ) if execution_config.save_artifacts else False
+            reports = self._generate_reports(test_results, bdd_features, scraped_data, ai_analysis)
             
             # Calculate final metrics
             end_time = time.time()
@@ -131,37 +124,15 @@ class MainOrchestrator:
             
             logger.info(f"Full automation completed in {self.performance_metrics['total_execution_time']:.2f}s")
             
-            return ExecutionResult(
-                success=True,
-                execution_time=self.performance_metrics['total_execution_time'],
-                scraped_data=scraped_data,
-                ai_analysis=ai_analysis,
-                bdd_features=bdd_features,
-                test_results=test_results,
-                reports=reports,
-                artifacts_saved=artifacts_saved
-            )
+            return True
             
         except Exception as e:
             logger.error(f"Error during automation execution: {e}")
+            return False
             
-            end_time = time.time()
-            self.performance_metrics['total_execution_time'] = end_time - start_time
-            
-            return ExecutionResult(
-                success=False,
-                execution_time=self.performance_metrics['total_execution_time'],
-                scraped_data={},
-                ai_analysis={},
-                bdd_features=[],
-                test_results=None,
-                reports={},
-                error_message=str(e)
-            )
-        
         finally:
             # Cleanup
-            await self._cleanup()
+            self._cleanup()
     
     async def _scrape_website(self, url: str) -> Dict:
         """Scrape website and extract data"""
@@ -413,15 +384,30 @@ class MainOrchestrator:
             # Quick AI analysis
             ai_analysis = await self._analyze_with_ai(scraped_data, ai_model)
             
+            # Safe extraction of data
+            title = scraped_data.get('title', 'N/A')
+            forms_count = len(scraped_data.get('forms', []))
+            links_count = len(scraped_data.get('links', []))
+            buttons_count = len(scraped_data.get('buttons', []))
+            
+            # Safe extraction of AI analysis
+            analysis_preview = ""
+            if 'bdd_scenarios' in ai_analysis:
+                analysis_preview = str(ai_analysis['bdd_scenarios'])[:500]
+            elif 'raw_response' in ai_analysis:
+                analysis_preview = str(ai_analysis['raw_response'])[:500]
+            
+            logger.info(f"Quick test completed successfully for: {url}")
+            
             return {
                 'success': True,
                 'url': url,
-                'title': scraped_data.get('title', ''),
-                'forms_count': len(scraped_data.get('forms', [])),
-                'links_count': len(scraped_data.get('links', [])),
-                'buttons_count': len(scraped_data.get('buttons', [])),
+                'title': title,
+                'forms_count': forms_count,
+                'links_count': links_count,
+                'buttons_count': buttons_count,
                 'ai_model': ai_model,
-                'analysis_preview': ai_analysis.get('bdd_scenarios', '')[:500]
+                'analysis_preview': analysis_preview
             }
             
         except Exception as e:

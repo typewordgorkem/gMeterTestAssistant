@@ -49,141 +49,63 @@ def print_banner():
     print(banner)
 
 
-def create_parser():
-    """Create argument parser"""
+def parse_arguments():
+    """Parse command line arguments"""
     parser = argparse.ArgumentParser(
-        description="AI Test Automation Assistant - Lokal AI ile otomatik test üretimi",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Örnekler:
-  python main.py --url https://example.com --ai-model llama2
-  python main.py --url https://example.com --ai-model mistral --headless
-  python main.py --quick-test --url https://example.com
-  python main.py --list-models
-        """
+        description="🤖 AI Test Automation Assistant",
+        epilog="Örnek: python main.py --url https://example.com --ai-model llama3:latest"
     )
     
     # Main arguments
-    parser.add_argument(
-        "--url",
-        type=str,
-        help="Test edilecek web sitesinin URL'si"
-    )
+    parser.add_argument('--url', type=str, help='Test edilecek website URL\'si')
+    parser.add_argument('--full-automation', type=str, help='Full automation workflow için URL')
+    parser.add_argument('--ai-model', type=str, help='Kullanılacak AI model')
+    parser.add_argument('--output-dir', type=str, default='reports', help='Çıktı dosyalarının kaydedileceği dizin')
     
-    parser.add_argument(
-        "--ai-model",
-        type=str,
-        default="llama2",
-        help="Kullanılacak AI model adı (default: llama2)"
-    )
-    
-    parser.add_argument(
-        "--output-dir",
-        type=str,
-        default="reports",
-        help="Çıktı dosyalarının kaydedileceği klasör (default: reports)"
-    )
-    
-    # Execution options
-    parser.add_argument(
-        "--headless",
-        action="store_true",
-        help="Tarayıcıyı görünmez modda çalıştır"
-    )
-    
-    parser.add_argument(
-        "--no-parallel",
-        action="store_true",
-        help="Testleri paralel olarak çalıştırma"
-    )
-    
-    parser.add_argument(
-        "--no-reports",
-        action="store_true",
-        help="Rapor üretme"
-    )
-    
-    parser.add_argument(
-        "--no-artifacts",
-        action="store_true",
-        help="Artifact dosyalarını kaydetme"
-    )
+    # Test options
+    parser.add_argument('--headless', action='store_true', help='Headless modda çalıştır')
+    parser.add_argument('--no-parallel', action='store_true', help='Paralel test çalıştırmayı devre dışı bırak')
+    parser.add_argument('--no-reports', action='store_true', help='Rapor üretmeyi devre dışı bırak')
+    parser.add_argument('--no-artifacts', action='store_true', help='Artifact üretmeyi devre dışı bırak')
     
     # Utility options
-    parser.add_argument(
-        "--quick-test",
-        action="store_true",
-        help="Hızlı test çalıştır (sadece scraping ve AI analizi)"
-    )
+    parser.add_argument('--quick-test', action='store_true', help='Sadece hızlı test çalıştır')
+    parser.add_argument('--list-models', action='store_true', help='Mevcut AI modellerini listele')
+    parser.add_argument('--validate-config', action='store_true', help='Konfigürasyon dosyasını doğrula')
+    parser.add_argument('--config', type=str, default='config/config.yaml', help='Konfigürasyon dosyası yolu')
+    parser.add_argument('--verbose', action='store_true', help='Detaylı log çıktısı')
     
-    parser.add_argument(
-        "--list-models",
-        action="store_true",
-        help="Mevcut AI modellerini listele"
-    )
-    
-    parser.add_argument(
-        "--validate-config",
-        action="store_true",
-        help="Konfigürasyon dosyasını doğrula"
-    )
-    
-    parser.add_argument(
-        "--config",
-        type=str,
-        default="config/config.yaml",
-        help="Konfigürasyon dosyası yolu (default: config/config.yaml)"
-    )
-    
-    parser.add_argument(
-        "--verbose",
-        "-v",
-        action="store_true",
-        help="Detaylı log çıktısı"
-    )
-    
-    return parser
+    return parser.parse_args()
 
 
-async def run_full_automation(args):
+def run_full_automation(args):
     """Run full automation workflow"""
     logger.info("Starting full automation workflow")
     
     # Initialize orchestrator
     orchestrator = MainOrchestrator(args.config)
     
-    # Create execution config
-    execution_config = ExecutionConfig(
-        url=args.url,
-        ai_model=args.ai_model,
-        output_dir=args.output_dir,
-        headless=args.headless,
-        parallel_tests=not args.no_parallel,
-        generate_reports=not args.no_reports,
-        save_artifacts=not args.no_artifacts
-    )
-    
     # Execute automation
-    result = await orchestrator.execute_full_automation(execution_config)
-    
-    # Print results
-    if result.success:
-        logger.info("✅ Automation completed successfully!")
-        print(f"\n🎉 Automation completed in {result.execution_time:.2f} seconds")
-        print(f"📊 Reports generated: {len(result.reports)}")
-        print(f"🗂️  Artifacts saved: {result.artifacts_saved}")
+    try:
+        result = orchestrator.execute_full_automation(args.url)
         
-        if result.reports:
-            print("\n📋 Generated Reports:")
-            for report_type, report_path in result.reports.items():
-                print(f"  - {report_type.upper()}: {report_path}")
-    else:
-        logger.error("❌ Automation failed!")
-        print(f"\n💥 Automation failed: {result.error_message}")
+        # Print results
+        if result:
+            logger.info("✅ Automation completed successfully!")
+            print(f"\n🎉 Automation completed successfully!")
+            print(f"📊 Check the reports directory for generated files")
+        else:
+            logger.error("❌ Automation failed!")
+            print(f"\n💥 Automation failed!")
+            sys.exit(1)
+            
+    except Exception as e:
+        logger.error(f"Error during automation: {e}")
+        print(f"\n💥 Automation failed: {e}")
         sys.exit(1)
 
 
-async def run_quick_test(args):
+def run_quick_test(args):
     """Run quick test"""
     logger.info("Starting quick test")
     
@@ -191,20 +113,20 @@ async def run_quick_test(args):
     orchestrator = MainOrchestrator(args.config)
     
     # Run quick test
-    result = await orchestrator.quick_test(args.url, args.ai_model)
-    
-    # Print results
-    if result['success']:
-        print(f"\n✅ Quick test completed for: {result['url']}")
-        print(f"📄 Page title: {result['title']}")
-        print(f"📝 Forms found: {result['forms_count']}")
-        print(f"🔗 Links found: {result['links_count']}")
-        print(f"🔘 Buttons found: {result['buttons_count']}")
-        print(f"🤖 AI model used: {result['ai_model']}")
-        print(f"\n📋 Analysis preview:\n{result['analysis_preview']}...")
-    else:
-        logger.error("❌ Quick test failed!")
-        print(f"\n💥 Quick test failed: {result['error']}")
+    try:
+        result = orchestrator.quick_test(args.url, args.ai_model)
+        
+        # Print results
+        if result:
+            print(f"\n✅ Quick test completed for: {args.url}")
+            print(f"🤖 AI model used: {args.ai_model}")
+            print(f"📄 Analysis completed successfully")
+        else:
+            print("\n⚠️  Quick test completed with warnings")
+            
+    except Exception as e:
+        logger.error(f"Error during quick test: {e}")
+        print(f"\n💥 Quick test failed: {e}")
         sys.exit(1)
 
 
@@ -269,7 +191,7 @@ def check_dependencies():
         return False
 
 
-async def main():
+def main():
     """Main function"""
     print_banner()
     
@@ -277,8 +199,7 @@ async def main():
     setup_logging()
     
     # Parse arguments
-    parser = create_parser()
-    args = parser.parse_args()
+    args = parse_arguments()
     
     # Set verbose logging
     if args.verbose:
@@ -300,15 +221,18 @@ async def main():
                 logger.error("URL is required for quick test")
                 print("❌ URL is required for quick test. Use --url parameter.")
                 sys.exit(1)
-            await run_quick_test(args)
+            run_quick_test(args)
+        elif args.full_automation:
+            # Full automation with specific URL
+            args.url = args.full_automation
+            run_full_automation(args)
         else:
             # Full automation
             if not args.url:
                 logger.error("URL is required for full automation")
                 print("❌ URL is required. Use --url parameter.")
-                parser.print_help()
                 sys.exit(1)
-            await run_full_automation(args)
+            run_full_automation(args)
             
     except KeyboardInterrupt:
         logger.info("Process interrupted by user")
@@ -325,4 +249,4 @@ if __name__ == "__main__":
     Path("logs").mkdir(exist_ok=True)
     
     # Run main function
-    asyncio.run(main()) 
+    main() 

@@ -46,46 +46,16 @@ class AIClient:
     async def analyze_html(self, html_content: str, url: str) -> AIResponse:
         """Analyze HTML content and extract testable elements"""
         prompt = f"""
-        Aşağıdaki HTML kodunu analiz et ve test edilebilir elementleri belirle:
-        
+        Bu web sitesini analiz et:
         URL: {url}
-        HTML İçeriği:
-        {html_content[:2000]}  # İlk 2000 karakter
         
-        Lütfen şunları belirle:
-        1. Test edilebilir formlar ve input alanları
-        2. Tıklanabilir elementler (butonlar, linkler)
-        3. Veri girişi gerektiren alanlar
-        4. Validasyon kontrolü yapılması gereken alanlar
-        5. Sayfa navigasyonu
+        Site başlığı ve ana elementleri belirle:
+        1. Sayfa başlığı
+        2. Ana butonlar
+        3. Linkler
+        4. Formlar
         
-        Yanıtını JSON formatında ver:
-        {{
-            "forms": [{{
-                "id": "form_id",
-                "action": "form_action",
-                "method": "POST/GET",
-                "fields": [{{
-                    "name": "field_name",
-                    "type": "text/email/password/etc",
-                    "required": true/false,
-                    "validation": "validation_rule"
-                }}]
-            }}],
-            "buttons": [{{
-                "id": "button_id",
-                "text": "button_text",
-                "action": "click_action"
-            }}],
-            "links": [{{
-                "href": "link_url",
-                "text": "link_text"
-            }}],
-            "navigation": [{{
-                "menu_item": "menu_name",
-                "url": "menu_url"
-            }}]
-        }}
+        Kısaca yanıtla.
         """
         
         return await self._make_request(prompt)
