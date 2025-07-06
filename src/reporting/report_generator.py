@@ -87,7 +87,7 @@ class ReportGenerator:
         logger.info(f"Generated {len(generated_reports)} report formats")
         return generated_reports
     
-    def generate_html_report(self, report_data: ReportData) -> str:
+    def generate_html_report(self, report_data) -> str:
         """Generate HTML report"""
         logger.info("Generating HTML report")
         
@@ -145,24 +145,34 @@ class ReportGenerator:
         logger.info(f"PDF report generated: {pdf_path}")
         return pdf_path
     
-    def _create_charts(self, report_data: ReportData) -> Dict[str, str]:
+    def _create_charts(self, report_data) -> Dict[str, str]:
         """Create charts for the report"""
         charts = {}
         
+        # Handle both dict and ReportData object
+        if isinstance(report_data, dict):
+            test_results = report_data.get('test_results', [])
+            bdd_scenarios = report_data.get('bdd_scenarios', [])
+            performance_metrics = report_data.get('performance_metrics', {})
+        else:
+            test_results = report_data.test_results
+            bdd_scenarios = report_data.bdd_scenarios
+            performance_metrics = report_data.performance_metrics
+        
         # Test Results Pie Chart
-        if report_data.test_results:
-            charts['test_results_pie'] = self._create_test_results_pie_chart(report_data.test_results)
+        if test_results:
+            charts['test_results_pie'] = self._create_test_results_pie_chart(test_results)
             
         # Test Execution Timeline
-        charts['execution_timeline'] = self._create_execution_timeline(report_data.test_results)
+        charts['execution_timeline'] = self._create_execution_timeline(test_results)
         
         # BDD Scenarios Distribution
-        if report_data.bdd_scenarios:
-            charts['bdd_distribution'] = self._create_bdd_distribution_chart(report_data.bdd_scenarios)
+        if bdd_scenarios:
+            charts['bdd_distribution'] = self._create_bdd_distribution_chart(bdd_scenarios)
             
         # Performance Metrics
-        if report_data.performance_metrics:
-            charts['performance_metrics'] = self._create_performance_chart(report_data.performance_metrics)
+        if performance_metrics:
+            charts['performance_metrics'] = self._create_performance_chart(performance_metrics)
         
         return charts
     
@@ -299,7 +309,7 @@ class ReportGenerator:
         
         return fig.to_html(include_plotlyjs='cdn', div_id='performance-metrics')
     
-    def _generate_html_content(self, report_data: ReportData, charts: Dict) -> str:
+    def _generate_html_content(self, report_data, charts: Dict) -> str:
         """Generate HTML report content"""
         html_template = """
 <!DOCTYPE html>
@@ -532,17 +542,35 @@ class ReportGenerator:
 </html>
         """
         
+        # Handle both dict and ReportData object
+        if isinstance(report_data, dict):
+            timestamp = report_data.get('timestamp', datetime.now().isoformat())
+            execution_summary = report_data.get('execution_stats', {})
+            test_results = report_data.get('test_results', [])
+            bdd_scenarios = report_data.get('bdd_scenarios', [])
+            performance_metrics = report_data.get('performance_metrics', {})
+            duration = report_data.get('duration', 0)
+            logs = report_data.get('logs', [])
+        else:
+            timestamp = report_data.timestamp
+            execution_summary = report_data.execution_summary
+            test_results = report_data.test_results
+            bdd_scenarios = report_data.bdd_scenarios
+            performance_metrics = report_data.performance_metrics
+            duration = report_data.duration
+            logs = report_data.logs
+
         template = Template(html_template)
         return template.render(
-            timestamp=report_data.timestamp,
-            execution_summary=report_data.execution_summary,
-            test_results=report_data.test_results,
-            bdd_scenarios=report_data.bdd_scenarios,
-            performance_metrics=report_data.performance_metrics,
-            duration=report_data.duration,
+            timestamp=timestamp,
+            execution_summary=execution_summary,
+            test_results=test_results,
+            bdd_scenarios=bdd_scenarios,
+            performance_metrics=performance_metrics,
+            duration=duration,
             charts=charts,
             include_logs=self.include_logs,
-            logs=report_data.logs
+            logs=logs
         )
     
     def create_report_data(self, 

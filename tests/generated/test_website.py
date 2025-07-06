@@ -1,5 +1,5 @@
-# Auto-generated test code
-# Generated at: 2025-07-05T22:29:31.454574
+# Auto-generated test code for Ofix.com
+# Generated at: 2025-07-05T23:29:44.367703
 
 import time
 import pytest
@@ -7,254 +7,292 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from loguru import logger
 import os
 
-# Create screenshots directory if it doesn't exist
-if not os.path.exists("reports/screenshots"):
-    os.makedirs("reports/screenshots")
 
-class WebsitePage:
-    """Page Object for https://www.trendyol.com/"""
+class OfixWebsitePage:
+    """Page Object for https://www.ofix.com/"""
     
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
-        
-    # Clean page elements with valid Python identifiers
-    BUTTON_ONETRUST_PC_BTN_HANDLER = (By.ID, "onetrust-pc-btn-handler")
-    BUTTON_ONETRUST_REJECT_ALL_HANDLER = (By.ID, "onetrust-reject-all-handler")
-    BUTTON_ONETRUST_ACCEPT_BTN_HANDLER = (By.ID, "onetrust-accept-btn-handler")
-    BUTTON_CLOSE_PC_BTN_HANDLER = (By.ID, "close-pc-btn-handler")
-    BUTTON_ACCEPT_RECOMMENDED_BTN_HANDLER = (By.ID, "accept-recommended-btn-handler")
-    BUTTON_FILTER_BTN_HANDLER = (By.ID, "filter-btn-handler")
-    BUTTON_CLEAR_FILTERS_HANDLER = (By.ID, "clear-filters-handler")
-    BUTTON_FILTER_APPLY_HANDLER = (By.ID, "filter-apply-handler")
-    BUTTON_FILTER_CANCEL_HANDLER = (By.ID, "filter-cancel-handler")
-    
-    LINK_INDIRIM_KUPONLARIM = (By.LINK_TEXT, "İndirim Kuponlarım")
-    LINK_TRENDYOL_SATIS_YAP = (By.LINK_TEXT, "Trendyol'da Satış Yap")
-    LINK_HAKKIMIZDA = (By.LINK_TEXT, "Hakkımızda")
-    LINK_YARDIM_DESTEK = (By.LINK_TEXT, "Yardım & Destek")
+        self.url = "https://www.ofix.com/"
     
     def load_page(self):
-        """Load the page"""
-        self.driver.get("https://www.trendyol.com/")
-        logger.info("Page loaded: https://www.trendyol.com/")
+        """Load the Ofix page"""
+        self.driver.get(self.url)
+        logger.info("Page loaded: https://www.ofix.com/")
         return self
     
     def wait_for_page_load(self):
-        """Wait for page to load"""
+        """Wait for page to load completely"""
         try:
             self.wait.until(EC.presence_of_element_located((By.TAG_NAME, "body")))
             time.sleep(2)  # Additional wait for dynamic content
+            logger.info("Page fully loaded")
         except TimeoutException:
             logger.error("Page load timeout")
             raise
     
-    def click_button(self, button_locator):
-        """Click button by locator"""
+    def find_search_button(self):
+        """Find search button on page"""
         try:
-            element = self.wait.until(EC.element_to_be_clickable(button_locator))
-            element.click()
-            logger.info(f"Clicked button: {button_locator}")
+            # Try different search button selectors
+            search_selectors = [
+                "//button[contains(text(), 'Ara')]",
+                "//button[contains(@class, 'search')]",
+                "//input[@type='submit']",
+                "//button[@type='submit']",
+                ".search-button",
+                "#search-button"
+            ]
+            
+            for selector in search_selectors:
+                try:
+                    if selector.startswith("//"):
+                        element = self.driver.find_element(By.XPATH, selector)
+                    else:
+                        element = self.driver.find_element(By.CSS_SELECTOR, selector)
+                    return element
+                except NoSuchElementException:
+                    continue
+            
+            logger.warning("Search button not found")
+            return None
         except Exception as e:
-            logger.error(f"Error in click_button: {e}")
-            raise
+            logger.error(f"Error finding search button: {e}")
+            return None
     
-    def click_link(self, link_text):
-        """Click link by text"""
+    def find_navigation_links(self):
+        """Find navigation links"""
         try:
-            element = self.wait.until(EC.element_to_be_clickable((By.LINK_TEXT, link_text)))
-            element.click()
-            logger.info(f"Clicked link: {link_text}")
+            # Find all navigation links
+            nav_links = self.driver.find_elements(By.CSS_SELECTOR, "nav a, .nav a, .navbar a, .menu a")
+            if not nav_links:
+                nav_links = self.driver.find_elements(By.TAG_NAME, "a")
+            
+            # Filter only visible links
+            visible_links = []
+            for link in nav_links[:10]:  # Limit to first 10 links
+                if link.is_displayed() and link.text.strip():
+                    visible_links.append(link)
+            
+            return visible_links
         except Exception as e:
-            logger.error(f"Error in click_link: {e}")
-            raise
+            logger.error(f"Error finding navigation links: {e}")
+            return []
     
-    def verify_element_present(self, locator):
-        """Verify element is present"""
-        try:
-            element = self.wait.until(EC.presence_of_element_located(locator))
-            logger.info(f"Element found: {locator}")
-            return True
-        except TimeoutException:
-            logger.error(f"Element not found: {locator}")
-            return False
-    
-    def take_screenshot(self, filename: str = None):
+    def take_screenshot(self, filename: str):
         """Take screenshot"""
-        if not filename:
-            filename = f"screenshot_{int(time.time())}.png"
-        
-        screenshot_path = f"reports/screenshots/{filename}"
-        self.driver.save_screenshot(screenshot_path)
-        logger.info(f"Screenshot saved: {screenshot_path}")
-        return screenshot_path
+        try:
+            # Ensure screenshots directory exists
+            os.makedirs("reports/screenshots", exist_ok=True)
+            
+            screenshot_path = f"reports/screenshots/{filename}"
+            self.driver.save_screenshot(screenshot_path)
+            logger.info(f"Screenshot saved: {screenshot_path}")
+            return screenshot_path
+        except Exception as e:
+            logger.error(f"Error taking screenshot: {e}")
+            return None
 
-class TestWebsite:
-    """Automated tests for website"""
+
+class TestOfixWebsite:
+    """Automated tests for Ofix.com website"""
     
     @pytest.fixture(scope="class")
     def driver(self):
-        """Setup WebDriver"""
+        """Setup WebDriver for testing"""
         options = Options()
-        options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1080')
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
         
-        driver = webdriver.Chrome(options=options)
+        # Use webdriver manager for Chrome
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=options)
         driver.maximize_window()
         driver.implicitly_wait(10)
         
-        yield driver
+        # Execute script to hide automation
+        driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         
+        yield driver
         driver.quit()
     
     @pytest.fixture(scope="function")
     def page(self, driver):
-        """Setup page object"""
-        page = WebsitePage(driver)
+        """Setup page object for each test"""
+        page = OfixWebsitePage(driver)
         try:
             page.load_page()
             page.wait_for_page_load()
             return page
         except Exception as e:
             logger.error(f"Failed to load page: {e}")
-            pytest.skip(f"Page load failed: {e}")
+            pytest.fail(f"Page load failed: {e}")
     
-    @pytest.mark.functional
     def test_page_load(self, page):
-        """Test page loading"""
+        """Test page loads successfully"""
         try:
-            logger.info("Starting test: test_page_load")
+            logger.info("Testing page load...")
             
-            # Verify page title
-            assert "Trendyol" in page.driver.title
+            # Check if page URL is correct
+            assert "ofix.com" in page.driver.current_url
+            
+            # Check page title
+            title = page.driver.title
+            assert title is not None and len(title) > 0
+            logger.info(f"Page title: {title}")
             
             # Take screenshot
-            page.take_screenshot("page_load_test.png")
+            page.take_screenshot("ofix_page_load_test.png")
             
-            logger.info("Page load test completed successfully")
-            
-        except Exception as e:
-            logger.error(f"Page load test failed: {e}")
-            page.take_screenshot("page_load_test_failed.png")
-            raise
-    
-    @pytest.mark.functional
-    def test_accept_cookies(self, page):
-        """Test accept cookies button"""
-        try:
-            logger.info("Starting test: test_accept_cookies")
-            
-            # Try to click accept cookies button
-            if page.verify_element_present(page.BUTTON_ONETRUST_ACCEPT_BTN_HANDLER):
-                page.click_button(page.BUTTON_ONETRUST_ACCEPT_BTN_HANDLER)
-                logger.info("Accept cookies button clicked")
-            else:
-                logger.info("Accept cookies button not found - may not be present")
-            
-            # Take screenshot
-            page.take_screenshot("accept_cookies_test.png")
-            
-            logger.info("Accept cookies test completed successfully")
+            logger.info("✅ Page load test passed")
             
         except Exception as e:
-            logger.error(f"Accept cookies test failed: {e}")
-            page.take_screenshot("accept_cookies_test_failed.png")
+            logger.error(f"❌ Page load test failed: {e}")
+            page.take_screenshot("ofix_page_load_test_failure.png")
             raise
     
-    @pytest.mark.functional
-    def test_navigation_links(self, page):
-        """Test navigation links"""
-        try:
-            logger.info("Starting test: test_navigation_links")
-            
-            # Check if main navigation links are present
-            links_to_check = [
-                "Hakkımızda",
-                "Yardım & Destek"
-            ]
-            
-            found_links = 0
-            for link_text in links_to_check:
-                try:
-                    link_element = page.driver.find_element(By.LINK_TEXT, link_text)
-                    if link_element.is_displayed():
-                        found_links += 1
-                        logger.info(f"Found link: {link_text}")
-                except:
-                    logger.info(f"Link not found: {link_text}")
-            
-            # Take screenshot
-            page.take_screenshot("navigation_links_test.png")
-            
-            logger.info(f"Navigation links test completed - found {found_links} links")
-            
-        except Exception as e:
-            logger.error(f"Navigation links test failed: {e}")
-            page.take_screenshot("navigation_links_test_failed.png")
-            raise
-    
-    @pytest.mark.functional
     def test_page_elements(self, page):
-        """Test page elements presence"""
+        """Test basic page elements are present"""
         try:
-            logger.info("Starting test: test_page_elements")
+            logger.info("Testing page elements...")
             
-            # Check if body element is present
-            body_present = page.verify_element_present((By.TAG_NAME, "body"))
-            assert body_present, "Body element not found"
+            # Check if body element exists
+            body = page.driver.find_element(By.TAG_NAME, "body")
+            assert body is not None
             
-            # Check if header element is present
-            header_elements = page.driver.find_elements(By.TAG_NAME, "header")
-            logger.info(f"Found {len(header_elements)} header elements")
+            # Check if there are any links on the page
+            links = page.driver.find_elements(By.TAG_NAME, "a")
+            assert len(links) > 0
+            logger.info(f"Found {len(links)} links on page")
+            
+            # Check if there are any buttons
+            buttons = page.driver.find_elements(By.TAG_NAME, "button")
+            logger.info(f"Found {len(buttons)} buttons on page")
             
             # Take screenshot
-            page.take_screenshot("page_elements_test.png")
+            page.take_screenshot("ofix_page_elements_test.png")
             
-            logger.info("Page elements test completed successfully")
+            logger.info("✅ Page elements test passed")
             
         except Exception as e:
-            logger.error(f"Page elements test failed: {e}")
-            page.take_screenshot("page_elements_test_failed.png")
+            logger.error(f"❌ Page elements test failed: {e}")
+            page.take_screenshot("ofix_page_elements_test_failure.png")
             raise
     
-    @pytest.mark.functional
-    def test_responsive_design(self, page):
-        """Test responsive design"""
+    def test_navigation_links(self, page):
+        """Test navigation links are present and accessible"""
         try:
-            logger.info("Starting test: test_responsive_design")
+            logger.info("Testing navigation links...")
+            
+            # Find navigation links
+            nav_links = page.find_navigation_links()
+            assert len(nav_links) > 0
+            
+            logger.info(f"Found {len(nav_links)} navigation links")
+            
+            # Test first few links
+            for i, link in enumerate(nav_links[:3]):
+                try:
+                    link_text = link.text.strip()
+                    link_href = link.get_attribute("href")
+                    
+                    if link_text and link_href:
+                        logger.info(f"Link {i+1}: {link_text} -> {link_href}")
+                        assert link.is_displayed()
+                        assert link.is_enabled()
+                    
+                except Exception as e:
+                    logger.warning(f"Issue with link {i+1}: {e}")
+                    continue
+            
+            # Take screenshot
+            page.take_screenshot("ofix_navigation_links_test.png")
+            
+            logger.info("✅ Navigation links test passed")
+            
+        except Exception as e:
+            logger.error(f"❌ Navigation links test failed: {e}")
+            page.take_screenshot("ofix_navigation_links_test_failure.png")
+            raise
+    
+    def test_search_functionality(self, page):
+        """Test search functionality if available"""
+        try:
+            logger.info("Testing search functionality...")
+            
+            # Find search button
+            search_button = page.find_search_button()
+            
+            if search_button:
+                logger.info("Search button found")
+                assert search_button.is_displayed()
+                
+                # Take screenshot
+                page.take_screenshot("ofix_search_functionality_test.png")
+                
+                logger.info("✅ Search functionality test passed")
+            else:
+                logger.info("⚠️ Search button not found - test skipped")
+                page.take_screenshot("ofix_search_functionality_test_no_button.png")
+                pytest.skip("Search button not found on page")
+            
+        except Exception as e:
+            logger.error(f"❌ Search functionality test failed: {e}")
+            page.take_screenshot("ofix_search_functionality_test_failure.png")
+            raise
+    
+    def test_responsive_design(self, page):
+        """Test responsive design at different screen sizes"""
+        try:
+            logger.info("Testing responsive design...")
             
             # Test different screen sizes
-            sizes = [
-                (1920, 1080),  # Desktop
-                (768, 1024),   # Tablet
-                (375, 667)     # Mobile
+            screen_sizes = [
+                (1920, 1080, "desktop"),
+                (768, 1024, "tablet"),
+                (375, 667, "mobile")
             ]
             
-            for width, height in sizes:
-                page.driver.set_window_size(width, height)
-                time.sleep(1)
-                
-                # Take screenshot for each size
-                page.take_screenshot(f"responsive_test_{width}x{height}.png")
-                
-                logger.info(f"Tested screen size: {width}x{height}")
+            for width, height, device in screen_sizes:
+                try:
+                    # Set window size
+                    page.driver.set_window_size(width, height)
+                    time.sleep(2)  # Wait for layout to adjust
+                    
+                    # Check if page is still functional
+                    body = page.driver.find_element(By.TAG_NAME, "body")
+                    assert body is not None
+                    
+                    # Take screenshot
+                    page.take_screenshot(f"ofix_responsive_test_{device}_{width}x{height}.png")
+                    
+                    logger.info(f"✅ Responsive test passed for {device} ({width}x{height})")
+                    
+                except Exception as e:
+                    logger.error(f"❌ Responsive test failed for {device}: {e}")
+                    page.take_screenshot(f"ofix_responsive_test_{device}_{width}x{height}_failure.png")
+                    continue
             
             # Reset to default size
             page.driver.set_window_size(1920, 1080)
             
-            logger.info("Responsive design test completed successfully")
+            logger.info("✅ Responsive design test completed")
             
         except Exception as e:
-            logger.error(f"Responsive design test failed: {e}")
-            page.take_screenshot("responsive_design_test_failed.png")
-            raise
-    
-    
+            logger.error(f"❌ Responsive design test failed: {e}")
+            page.take_screenshot("ofix_responsive_design_test_failure.png")
+            raise 

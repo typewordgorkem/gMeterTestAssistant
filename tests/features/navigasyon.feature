@@ -10,29 +10,29 @@
     Ve Sayfa başarıyla görüntülenir
 
   @navigation @link
-  Senaryo: 'İndirim Kuponlarım' linkine tıklama
+  Senaryo: 'Ücretsiz Araçlar' linkine tıklama
     Diyelim ki Kullanıcı ana sayfadadır
-    Eğer Kullanıcı 'İndirim Kuponlarım' linkine tıklar
+    Eğer Kullanıcı 'Ücretsiz Araçlar' linkine tıklar
     O zaman Yeni sayfa yüklenir
     Ve Sayfa başarıyla görüntülenir
 
   @navigation @link
-  Senaryo: 'Trendyol'da Satış Yap' linkine tıklama
+  Senaryo: 'Servisler' linkine tıklama
     Diyelim ki Kullanıcı ana sayfadadır
-    Eğer Kullanıcı 'Trendyol'da Satış Yap' linkine tıklar
+    Eğer Kullanıcı 'Servisler' linkine tıklar
     O zaman Yeni sayfa yüklenir
     Ve Sayfa başarıyla görüntülenir
 
   @navigation @link
-  Senaryo: 'Hakkımızda' linkine tıklama
+  Senaryo: 'Ücretsiz İK Yazılımı' linkine tıklama
     Diyelim ki Kullanıcı ana sayfadadır
-    Eğer Kullanıcı 'Hakkımızda' linkine tıklar
+    Eğer Kullanıcı 'Ücretsiz İK Yazılımı' linkine tıklar
     O zaman Yeni sayfa yüklenir
     Ve Sayfa başarıyla görüntülenir
 
   @navigation @link
-  Senaryo: 'Yardım & Destek' linkine tıklama
+  Senaryo: 'Ofispress' linkine tıklama
     Diyelim ki Kullanıcı ana sayfadadır
-    Eğer Kullanıcı 'Yardım & Destek' linkine tıklar
+    Eğer Kullanıcı 'Ofispress' linkine tıklar
     O zaman Yeni sayfa yüklenir
     Ve Sayfa başarıyla görüntülenir
